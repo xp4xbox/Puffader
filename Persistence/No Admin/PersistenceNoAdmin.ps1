@@ -1,5 +1,5 @@
 # Set the file name as your .exe
-$strFileName = "key.py"
+$strFileName = "file.exe"
 
 $APPDATA = "$env:APPDATA"
 $strScriptPath = $MyInvocation.MyCommand.Path; $strDirScriptPath = Split-Path $strScriptPath
