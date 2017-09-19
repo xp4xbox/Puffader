@@ -3,8 +3,13 @@ If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     Start-Process powershell.exe -Verb RunAs -ArgumentList ('-WindowStyle Hidden -noprofile -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
     exit
 }
+
+$strFileName = (Get-Item -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run).GetValue("winupdate")
+# delete program
+Remove-Item $strFileName -Force
+
 # stop program from starting at startup
-Remove-ItemProperty -path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run -name winlog
+Remove-ItemProperty -path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run -name winupdate
 
 # restore text files to open with notepad
 $WINDIR = "$env:WINDIR"
