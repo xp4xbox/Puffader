@@ -32,4 +32,4 @@ intCharPerSend = 1500
 blnBackRemove = "True"
 ```
 
-#### NOTE: If you plan to send messages via email, be sure to [allow access for less secure apps](https://myaccount.google.com/lesssecureapps)
+#### NOTE: If you plan to send messages via email, be sure to [allow access for less secure apps](https://myaccount.google.com/lesssecureapps) in your gmail account.
