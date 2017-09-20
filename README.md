@@ -13,7 +13,7 @@ Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Installing-P
 The program can be downloaded via github or git eg.
 ```git clone https://github.com/xp4xbox/Puffader```
 
-# Features
+## Features
 Currently Puffader has several features such as:
 * Ability to send logs to any gmail account.
 * Ability to send logs fia ftp
