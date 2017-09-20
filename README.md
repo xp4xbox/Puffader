@@ -13,6 +13,18 @@ Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Installing-P
 The program can be downloaded via github or git eg.
 ```git clone https://github.com/xp4xbox/Puffader```
 
+# Features
+Currently Puffader has several features such as:
+* Ability to send logs to any gmail account.
+* Ability to send logs fia ftp
+* Ability to configure log size before sending
+* Ability to control how you want the backspace key to be outputed as.
+* Ability to stop the program via ctrl-rshift-h.
+* Ability to log special characters.
+* Optional persistence.
+* Checking for multiple instances
+* And more...
+
 ## Quick Usage
 
 1. Open file with idle or any other editor.
@@ -36,7 +48,7 @@ blnBackRemove = "True"
 
 For more information please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki).
 
-### Building File To .exe, Using Persistence, ett.
+### Building File To .exe, Using Persistence, etc.
 
 Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki).
 
