@@ -18,6 +18,7 @@ Currently Puffader has several features such as:
 * Ability to send logs to any gmail account.
 * Ability to send logs via ftp
 * Ability to configure log size before sending
+* Ability to send logs at timed intervals
 * Ability to control how you want the backspace key to be outputed as.
 * Ability to stop the program via ctrl-rshift-h.
 * Ability to log special characters.
@@ -28,10 +29,10 @@ Currently Puffader has several features such as:
 ## Quick Usage
 
 1. Open file with idle or any other editor.
-2. Modifiy lines 11-24 for your personal preference: eg.
+2. Modifiy lines 12-27 for your personal preference: eg.
 ```
-strEmailAc = "email@gmail.com
-strEmailPass = "password"
+strEmailAc = "email@gmail.com"
+strEmailPass = "pass"
 
 blnFTP = "False"
 strFtpServer = ""
@@ -40,7 +41,11 @@ strFtpUser = ""
 strFtpPass = ""
 strFtpRemotePath = "/"
 
-intCharPerSend = 1500
+intCharPerSend = 1000
+
+blnUseTime = "True"
+strTimePerSend = 120
+
 blnBackRemove = "True"
 ```
 
