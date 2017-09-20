@@ -4,9 +4,9 @@ Puffader is an opensource, hidden and undetectable email/ftp sending keylogger f
 
 ## Installation
 Requires:
-*Python3
-*Pyhook
-*Pywin32
+* Python3
+* Pyhook
+* Pywin32
 
 Please refer to the [wiki]:https://github.com/xp4xbox/Puffader/wiki/Installing-Prerequisites for more information.
 ```git clone ```
