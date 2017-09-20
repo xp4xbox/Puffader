@@ -15,7 +15,7 @@ The program can be downloaded via github or git eg.
 
 ## Quick Usage
 
-1. Open file with idle or any other editor
+1. Open file with idle or any other editor.
 2. Modifiy lines 11-24 for your personal preference: eg.
 ```
 strEmailAc = "email@gmail.com
@@ -33,3 +33,15 @@ blnBackRemove = "True"
 ```
 
 #### NOTE: If you plan to send messages via email, be sure to [allow access for less secure apps](https://myaccount.google.com/lesssecureapps) in your gmail account.
+
+For more information please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki).
+
+### Building File To .exe, Using Persistence, ett.
+
+Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki).
+
+## Contributing
+
+Contributing is encouraged and will help make a better program. Please refer to [this](https://gist.github.com/MarcDiethelm/7303312) before contributing.
+
+
