@@ -16,7 +16,7 @@ The program can be downloaded via github or git eg.
 ## Features
 Currently Puffader has several features such as:
 * Ability to send logs to any gmail account.
-* Ability to send logs fia ftp
+* Ability to send logs via ftp
 * Ability to configure log size before sending
 * Ability to control how you want the backspace key to be outputed as.
 * Ability to stop the program via ctrl-rshift-h.
