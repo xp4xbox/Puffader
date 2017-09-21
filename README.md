@@ -57,6 +57,10 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 
 Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki).
 
+## Help
+
+If you need any help at all, feel free to post a "help" issue.
+
 ## Contributing
 
 Contributing is encouraged and will help make a better program. Please refer to [this](https://gist.github.com/MarcDiethelm/7303312) before contributing.
