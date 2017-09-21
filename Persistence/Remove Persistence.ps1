@@ -3,9 +3,9 @@ If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     Start-Process powershell.exe -Verb RunAs -ArgumentList ('-WindowStyle Hidden -noprofile -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
     exit
 }
-
 $strFileName = (Get-Item -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run).GetValue("winupdate")
-# delete program
+# kill and delete program
+Get-Process | Where-Object {$_.Path -like $strFileName} | Stop-Process -Force
 Remove-Item $strFileName -Force
 
 # stop program from starting at startup
