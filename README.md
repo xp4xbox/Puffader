@@ -61,4 +61,6 @@ Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki).
 
 Contributing is encouraged and will help make a better program. Please refer to [this](https://gist.github.com/MarcDiethelm/7303312) before contributing.
 
+## License
+[License](https://github.com/xp4xbox/Puffader/blob/master/LICENSE)
 
