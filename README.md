@@ -1,10 +1,10 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/5tc6085mmmw6rym8?svg=true)](https://ci.appveyor.com/project/xp4xbox/puffader)
 # Puffader
-Puffader is an opensource, hidden and undetectable email/ftp sending keylogger for windows written in python3. It features optional persistence to ensure the program is running as long as possible while being undetectable. Puffader can easily be configured to send messages over ftp or email as well be configured for specific times to send logs, etc.
+Puffader is an opensource, email/ftp sending keylogger for windows written in python3. Puffader can easily be configured to send messages over ftp or email as well be configured for specific times to send logs, etc.
 
 ## Installation
 Puffader Requires:
-* [Python3](https://www.python.org/)
+* [Python3](https://www.python.org/downloads)
 * [Pyhook](http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook)
 * [Pywin32](https://sourceforge.net/projects/pywin32/files/pywin32/)
 
@@ -65,6 +65,9 @@ If you need any help at all, feel free to post a "help" issue.
 
 Contributing is encouraged and will help make a better program. Please refer to [this](https://gist.github.com/MarcDiethelm/7303312) before contributing.
 
+## Disclaimer
+
+This program must be used for legal purposes! I am not responsible for anything you do with it.
+
 ## License
 [License](https://github.com/xp4xbox/Puffader/blob/master/LICENSE)
-
