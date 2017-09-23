@@ -1,6 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/5tc6085mmmw6rym8?svg=true)](https://ci.appveyor.com/project/xp4xbox/puffader)
 # Puffader
-Puffader is an opensource, email/ftp sending keylogger for windows written in python3. Puffader can easily be configured to send messages over ftp or email as well be configured for specific times to send logs, etc.
+Puffader is an opensource, hidden and undetectable keylogger for windows written in python3. Puffader can easily be configured to send messages over ftp or email as well be configured for specific times to send logs, etc.
 
 ## Installation
 Puffader Requires:
@@ -17,6 +17,7 @@ The program can be downloaded via github or git eg.
 Currently Puffader has several features such as:
 * Ability to send logs to any gmail account.
 * Ability to send logs via ftp
+* Ability to store logs locally
 * Ability to configure log size before sending
 * Ability to send logs at timed intervals
 * Ability to control how you want the backspace key to be outputed as.
@@ -29,7 +30,7 @@ Currently Puffader has several features such as:
 ## Quick Usage
 
 1. Open file with idle or any other editor.
-2. Modifiy lines 12-27 for your personal preference: eg.
+2. Modifiy lines 21-37 for your personal preference: eg.
 ```
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
@@ -43,9 +44,10 @@ strFtpRemotePath = "/"
 
 intCharPerSend = 1000
 
-blnUseTime = "True"
+blnUseTime = "False"
 strTimePerSend = 120
 
+blnStoreLocal = "False"
 blnBackRemove = "True"
 ```
 
