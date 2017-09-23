@@ -11,7 +11,7 @@ Puffader Requires:
 Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Installing-Prerequisites) for more information on installing prerequisites.
 
 The program can be downloaded via github or git eg.
-```git clone https://github.com/xp4xbox/Puffader.git```
+```git clone https://github.com/xp4xbox/Puffader```
 
 ## Features
 Currently Puffader has several features such as:
