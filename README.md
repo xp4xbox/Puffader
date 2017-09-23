@@ -53,9 +53,18 @@ blnBackRemove = "True"
 
 For more information please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki).
 
-### Building File To .exe, Using Persistence, etc.
+### Compiling Program To .exe
 
-Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki).
+#### py2exe (requires python 3.4)
+1. Run ```pip install py2exe``` to install it
+2. Copy the _cpyHook.pyd and cpyHook.py files from ```c:\PythonXX\Lib\site-packages\pyHook``` to ```c:\PythonXX\Lib\site-packages```.
+3. Run ```build_exe Puffader.py```
+
+#### PyInstaller
+1. Run ```pip install pyinstaller``` to install it.
+2. Run ```pyinstaller Puffader.py --windowed```
+
+Or refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Compiling-To-.exe).
 
 ## Help
 
