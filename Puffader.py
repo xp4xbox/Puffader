@@ -30,8 +30,8 @@ strFtpRemotePath = "/"
 
 intCharPerSend = 1100  # set num of chars before send log/store
 
-blnUseTime = "False"  # if you prefer to use a timer to send logs, set this to True
-strTimePerSend = 120  # set how often to send logs in seconds
+blnUseTime = "False"  # if you prefer to use a timer to send/save logs, set this to True
+strTimePerSend = 120  # set how often to send/save logs in seconds
 
 blnStoreLocal = "False"  # True to save logs locally to temp folder as winlog.txt.
 blnBackRemove = "False"  # set this to True if you prefer the program removes the last key if the user types backspace
