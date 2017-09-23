@@ -58,7 +58,13 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 #### py2exe (requires python 3.4)
 1. Run ```pip install py2exe``` to install it
 2. Copy the _cpyHook.pyd and cpyHook.py files from ```c:\PythonXX\Lib\site-packages\pyHook``` to ```c:\PythonXX\Lib\site-packages```.
-3. Run ```build_exe Puffader.py```
+3. Create a new python file called setup.py and paste in the following code:
+```
+from distutils.core import setup
+import py2exe
+setup(windows=['Puffader.py'])
+```
+3. Run ```python setup.py py2exe```
 
 #### PyInstaller
 1. Run ```pip install pyinstaller``` to install it.
