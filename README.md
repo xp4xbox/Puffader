@@ -1,11 +1,11 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/5tc6085mmmw6rym8?svg=true)](https://ci.appveyor.com/project/xp4xbox/puffader)
 # Puffader
-Puffader is an opensource, hidden and undetectable keylogger for windows written in python3. Puffader can easily be configured to send messages over ftp or email as well be configured for specific times to send logs, etc.
+Puffader is an opensource, hidden and undetectable keylogger for windows written in Python 2.7. Puffader can easily be configured to send messages over ftp or email as well be configured for specific times to send logs, etc.
 
 ## Installation
 Puffader Requires:
-* [Python3](https://www.python.org/downloads)
-* [Pyhook](http://www.lfd.uci.edu/~gohlke/pythonlibs/#pyhook)
+* [Python 2.7](https://www.python.org/downloads)
+* [Pyhook](https://sourceforge.net/projects/pyhook/files/pyhook/1.5.1/)
 * [Pywin32](https://sourceforge.net/projects/pywin32/files/pywin32/)
 
 Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Installing-Prerequisites) for more information on installing prerequisites.
@@ -57,10 +57,9 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 
 ### Compiling Program To .exe
 
-#### py2exe (requires python 3.4)
-1. Run ```pip install py2exe``` to install it
-2. Copy the _cpyHook.pyd and cpyHook.py files from ```c:\PythonXX\Lib\site-packages\pyHook``` to ```c:\PythonXX\Lib\site-packages```.
-3. Create a new python file called setup.py and paste in the following code:
+#### py2exe
+1. Install [py2exe](https://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/).
+2. Create a new python file called setup.py and paste in the following code:
 ```
 from distutils.core import setup
 import py2exe
