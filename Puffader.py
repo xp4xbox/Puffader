@@ -54,12 +54,12 @@ if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
     exit()
 
 def GetExIp(): # function to get external ip
+    global strExIP
     try:
-        ip = urllib.request.urlopen('http://ident.me').read().decode('utf8')
-        return ip
+        strExIP = urllib.request.urlopen('http://ident.me').read().decode('utf8')
     except:
-        return "?"
-strExIP = GetExIp()
+        strExIP = "?"
+GetExIpThread = threading.Thread(target=GetExIp).start()
 
 blnStop = "False"
 
