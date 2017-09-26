@@ -30,7 +30,7 @@ Currently Puffader has several features such as:
 ## Quick Usage
 
 1. Open file with idle or any other editor.
-2. Modifiy lines 21-37 for your personal preference: eg.
+2. Modifiy lines 21-39 for your personal preference: eg.
 ```
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
@@ -47,8 +47,10 @@ intCharPerSend = 1000
 blnUseTime = "False"
 strTimePerSend = 120
 
-blnStoreLocal = "False"
-blnBackRemove = "True"
+blnStoreLocal = "True"
+strLogFile = "c:/temp/test.txt"
+
+blnBackRemove = "True" 
 ```
 
 #### NOTE: If you plan to send messages via email, be sure to [allow access for less secure apps](https://myaccount.google.com/lesssecureapps) in your gmail account.
