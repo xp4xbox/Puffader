@@ -60,6 +60,7 @@ blnScrShot = "True"
 strScrDir = "c:/temp"
 intScrTime = 120
 ```
+> NOTE: For `strScrDir`, be sure to leave out the last `/`.
 
 #### NOTE: If you plan to send messages via email, be sure to [allow access for less secure apps](https://myaccount.google.com/lesssecureapps) in your gmail account.
 
