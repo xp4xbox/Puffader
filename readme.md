@@ -1,12 +1,13 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/5tc6085mmmw6rym8?svg=true)](https://ci.appveyor.com/project/xp4xbox/puffader)
 # Puffader
-Puffader is an opensource, hidden and undetectable keylogger for windows written in Python 2.7. Puffader can easily be configured to send messages over ftp or email as well be configured for specific times to send logs, etc.
+Puffader is an opensource, hidden and undetectable keylogger for windows written in Python 2.7 which can also capture screenshots and mouse window clicks.
 
 ## Installation
 Puffader Requires:
 * [Python 2.7](https://www.python.org/downloads)
 * [Pyhook](https://sourceforge.net/projects/pyhook/files/pyhook/1.5.1/)
 * [Pywin32](https://sourceforge.net/projects/pywin32/files/pywin32/)
+* [PyAutoGui](https://pypi.python.org/pypi/PyAutoGUI)
 
 Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Installing-Prerequisites) for more information on installing prerequisites.
 
@@ -17,6 +18,7 @@ The program can be downloaded via github or git eg.
 Currently Puffader has several features such as:
 * Ability to send logs to any gmail account.
 * Ability to send logs via ftp
+* Ability to capture screenshots
 * Ability to store logs locally
 * Ability to configure log size before sending
 * Ability to send logs at timed intervals
@@ -24,13 +26,14 @@ Currently Puffader has several features such as:
 * Ability to stop the program via ctrl-rshift-h.
 * Ability to log special characters.
 * Optional persistence.
+* Ability to capture window mouse clicks
 * Checking for multiple instances
 * And more...
 
 ## Quick Usage
 
 1. Open file with idle or any other editor.
-2. Modifiy lines `21-39` for your personal preference: eg.
+2. Modifiy lines `22-45` for your personal preference: eg.
 ```
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
@@ -45,12 +48,17 @@ strFtpRemotePath = "/"
 intCharPerSend = 1000
 
 blnUseTime = "False"
-strTimePerSend = 120
+intTimePerSend = 120
 
 blnStoreLocal = "True"
 strLogFile = "c:/temp/test.txt"
 
-blnBackRemove = "True" 
+blnLogClick = "True"
+blnBackRemove = "True"
+
+blnScrShot = "True"
+strScrDir = "c:/temp"
+intScrTime = 120
 ```
 
 #### NOTE: If you plan to send messages via email, be sure to [allow access for less secure apps](https://myaccount.google.com/lesssecureapps) in your gmail account.
