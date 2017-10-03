@@ -68,21 +68,11 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 
 ### Compiling Program To .exe
 
-#### py2exe
-1. Install [py2exe](https://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/).
-2. Create a new python file called setup.py and paste in the following code:
-```
-from distutils.core import setup
-import py2exe
-setup(windows=['Puffader.py'])
-```
-3. Run ```python setup.py py2exe```
+#### Py2Exe
+1. Install [Py2Exe](https://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/).
+2. Run `python setup.py`
 
-#### PyInstaller
-1. Run ```pip install pyinstaller``` to install it.
-2. Run ```pyinstaller Puffader.py --windowed```
-
-Or refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Compiling-To-.exe).
+Or refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Compiling-To-.exe) for more information.
 
 ## Help
 
