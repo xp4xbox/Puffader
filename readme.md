@@ -74,7 +74,7 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 
 #### cx_Freeze
 1. Install cx_Freeze via `pip install cx_freeze`.
-2. Run `python cx_freeze_setup.py build` and within the `build` folder you'll see the exe.
+2. Run `python cx_freeze_setup.py build`.
 
 Or refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Compiling-To-.exe) for more information.
 
