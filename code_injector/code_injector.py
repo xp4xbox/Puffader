@@ -1,5 +1,5 @@
 '''
-Process Migrator (code injector) with modifications by xp4xbox
+Code Injector with modifications by xp4xbox
 https://github.com/xp4xbox/Puffader
 
 Seitz, Justin. "7." Gray Hat Python: Python Programming for Hackers and Reverse Engineers,
