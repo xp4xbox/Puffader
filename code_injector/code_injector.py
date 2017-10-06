@@ -16,17 +16,17 @@ except ImportError:
     sys.exit(0)
 
 if len(sys.argv) < 2:
-    print "python code_injector <ORIGINAL PROCESS> <PROCESS TO MIGRATE>"
+    print "python code_injector.py <PROCESS TO INJECT> <PROCESS TO KILL>"
     sys.exit(0)
 
-ProcessToMigrate = sys.argv[1]
-ProgramProcess = sys.argv[2]
+Process = sys.argv[1]
+ProcessToKill = sys.argv[2]
 
-process = filter(lambda p: p.name() == ProcessToMigrate, psutil.process_iter())
+process = filter(lambda p: p.name() == ProcessToKill, psutil.process_iter())
 for proc in process:
     pid_to_kill = str(proc.pid)
 
-process = filter(lambda p: p.name() == ProgramProcess, psutil.process_iter())
+process = filter(lambda p: p.name() == Process, psutil.process_iter())
 for proc in process:
     pid = str(proc.pid)
 
