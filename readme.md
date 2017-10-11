@@ -79,6 +79,10 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 
 Or refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Compiling-To-.exe) for more information.
 
+## Using Persistence
+
+Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Persistence).
+
 ## Adding Meterpreter Plugin
 
 1. Generate raw shellcode using msfvenom (eg. xr8\x02...).
