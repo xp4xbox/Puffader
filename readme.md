@@ -100,6 +100,8 @@ code_injector.InjectShellCode(pid, shellcode)  # inject the shellcode into the p
 ```
 5. Build program with Py2Exe using [setup.py](https://github.com/xp4xbox/Puffader/blob/master/Meterpreter_Plugin/setup.py) to compile the program to single .exe.
 
+> Check my other project [PyEvade](https://github.com/xp4xbox/PyEvade) for more info on how this works.
+
 ## Help
 
 If you need any help at all, feel free to post a "help" issue.
