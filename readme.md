@@ -98,7 +98,7 @@ pid = os.getpid()  # get current pid
 
 code_injector.InjectShellCode(pid, shellcode)  # inject the shellcode into the program
 ```
-5. Build program with Py2Exe using [setup.py](https://github.com/xp4xbox/Puffader/blob/master/Meterpreter_Plugin/setup.py)
+5. Build program with Py2Exe using [setup.py](https://github.com/xp4xbox/Puffader/blob/master/Meterpreter_Plugin/setup.py) to compile the program to single .exe.
 
 ## Help
 
