@@ -2,8 +2,8 @@
 $url = ""
 # set zip file name eg. puffader.zip
 $ZipName = ""
-# set folder name
-$strFileDir = "" eg. puffader
+# set folder name eg. puffader
+$strFileDir = "" 
 
 $TEMP = "$env:TEMP"
 
