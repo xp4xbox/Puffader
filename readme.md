@@ -83,6 +83,14 @@ Or refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Compiling-To-.ex
 
 Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Persistence).
 
+## USB Rubber Ducky Payload
+
+1. Zip the compiled .exe's folder and upload it to any file sharing service, etc.
+2. Edit [payload.ps1](https://github.com/xp4xbox/Puffader/blob/master/USB_Rubber_Ducky_Payload/payload.ps1) setting `$url` to be the direct link to the .zip. `$ZipName` to be the .zip name and `$strFileDir` to be the folder name inside the .zip file.
+3. Upload your payload.ps1 as well.
+4. Set `$url` in [inject.txt](https://github.com/xp4xbox/Puffader/blob/master/USB_Rubber_Ducky_Payload/inject.txt) to be the direct link for payload.ps1.
+5. Encode to inject.bin using [my encoder](https://www.instructables.com/id/USB-Rubber-Ducky-Script-Encoder-VBScript/) or any other one.
+
 ## Adding Meterpreter Plugin
 
 1. Generate raw shellcode using msfvenom (eg. xr8\x02...).
