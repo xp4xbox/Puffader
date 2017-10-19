@@ -29,6 +29,7 @@ Currently Puffader has several features such as:
 * Optional persistence.
 * Ability to capture window mouse clicks
 * Checking for multiple instances
+* USB Rubber Ducky payload
 * And more...
 
 ## Quick Usage
@@ -90,7 +91,7 @@ Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Persistence)
 3. Upload your payload.ps1 as well.
 4. Set `$url` in [inject.txt](https://github.com/xp4xbox/Puffader/blob/master/USB_Rubber_Ducky_Payload/inject.txt) to be the direct link for payload.ps1.
 5. Encode to inject.bin using [my encoder](https://www.instructables.com/id/USB-Rubber-Ducky-Script-Encoder-VBScript/) or any other one.
-> TIP: Forking this project and using personal rep for changes is a good way to host the files.
+> TIP: Forking this project and using personal rep for changes is a alternative way to host the files.
 
 ## Adding Meterpreter Plugin
 
