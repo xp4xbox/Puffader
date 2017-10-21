@@ -21,6 +21,5 @@ def GetExIp(): # function to get external ip
         strExIP = urlopen("http://ident.me").read().decode('utf8')
     except:
         strExIP = "?
-...........
 '''
   
