@@ -26,10 +26,8 @@ Currently Puffader has several features such as:
 * Ability to stop the program via ctrl-rshift-h.
 * Ability to log special characters.
 * Ability to embed an undetectable meterpreter shell
-* Optional persistence.
 * Ability to capture window mouse clicks
 * Checking for multiple instances
-* USB Rubber Ducky payload
 * And more...
 
 ## Quick Usage
@@ -70,30 +68,13 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 
 ### Compiling Program To .exe
 
-#### Py2Exe (recommmended)
-1. Add this code to Puffader.py `sys.stderr = None` after the import statements to ensure no errors will show.
+#### Py2Exe
+1. (Optional) Add this code to Puffader.py `sys.stderr = None` after the import statements to ensure no errors will show.
 2. Install [Py2Exe](https://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/).
-3. Run `python setup.py`
-
-#### cx_Freeze
-1. Add this code to Puffader.py `sys.stderr = None` after the import statements to ensure no errors will show.
-2. Install cx_Freeze via `pip install cx_freeze`.
-3. Run `python cx_freeze_setup.py build`.
+3. Make sure the program is called Puffader.py in your python folder as well.
+4. Run `python setup.py`
 
 Or refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Compiling-To-.exe) for more information.
-
-## Using Persistence
-
-Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Persistence).
-
-## USB Rubber Ducky Payload
-
-1. Zip the compiled .exe's folder and upload it to any file sharing service.
-2. Edit [payload.ps1](https://github.com/xp4xbox/Puffader/blob/master/USB_Rubber_Ducky_Payload/payload.ps1) setting `$url` to be the direct link to the .zip. `$ZipName` to be the .zip name and `$strFileDir` to be the folder name inside the .zip file.
-3. Upload your payload.ps1 as well.
-4. Set `$url` in [inject.txt](https://github.com/xp4xbox/Puffader/blob/master/USB_Rubber_Ducky_Payload/inject.txt) to be the direct link for payload.ps1.
-5. Encode to inject.bin using [my encoder](https://www.instructables.com/id/USB-Rubber-Ducky-Script-Encoder-VBScript/) or any other one.
-> TIP: Forking this project and using personal rep for changes is a alternative way to host the files.
 
 ## Adding Meterpreter Plugin
 
