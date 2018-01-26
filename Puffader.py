@@ -44,7 +44,7 @@ blnScrShot = "False"  # set to True for capturing screenshots
 strScrDir = ""  # set non-protected dir for scrshot location if storing locally. eg c:/temp
 intScrTime = 120  # set time for taking screen in seconds
 
-blnAddToStartup = "True"
+blnAddToStartup = "False"
 
 def hide():
     window = win32console.GetConsoleWindow()
