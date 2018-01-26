@@ -67,7 +67,7 @@ blnAddToStartup = "False"
 
 #### If you plan to send messages via email, be sure to [allow access for less secure apps](https://myaccount.google.com/lesssecureapps) in your gmail account.
 
-#### If you ever want to remove the program from startup, open regedit and navigate to `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` and delete the value `MicrosoftUpdate`. I gave it non-suspicious name on purpose.
+#### If you ever set the program to run at startup and want to remove it, open regedit and navigate to `HKCU\Software\Microsoft\Windows\CurrentVersion\Run` and delete the value `MicrosoftUpdate`.
 
 For more information please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Usage).
 
