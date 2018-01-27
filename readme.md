@@ -22,7 +22,6 @@ Currently Puffader has several features such as:
 * Ability to store logs locally
 * Ability to configure log size before sending
 * Ability to send logs at timed intervals
-* Ability to control how you want the backspace key to be outputed as.
 * Ability to stop the program via ctrl-rshift-h.
 * Ability to log special characters.
 * Ability to embed an undetectable meterpreter shell
@@ -34,7 +33,7 @@ Currently Puffader has several features such as:
 ## Quick Usage
 
 1. Open file with idle or any other editor.
-2. Modifiy lines `22-47` for your personal preference: eg.
+2. Modifiy lines `23-46` for your personal preference: eg.
 ```
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
@@ -54,16 +53,16 @@ intTimePerSend = 120
 blnStoreLocal = "True"
 strLogFile = "c:/temp/test.txt"
 
-blnLogClick = "True"
-blnBackRemove = "True"
-
 blnScrShot = "True"
 strScrDir = "c:/temp"
 intScrTime = 120
 
+blnLogClick = "True"
 blnAddToStartup = "False"
 ```
 > NOTE: For `strScrDir`, be sure to leave out the last `/`.
+
+#### You can only choose one method for storing/sending logs, default is by email.
 
 #### If you plan to send messages via email, be sure to [allow access for less secure apps](https://myaccount.google.com/lesssecureapps) in your gmail account.
 
