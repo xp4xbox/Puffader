@@ -27,6 +27,7 @@ Currently Puffader has several features such as:
 * Ability to embed an undetectable meterpreter shell
 * Ability to capture window mouse clicks
 * Ability to run at startup
+* Ability to capture clipboard data
 * Checking for multiple instances
 * And more...
 
