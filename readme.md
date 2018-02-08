@@ -33,7 +33,7 @@ Currently Puffader has several features such as:
 ## Quick Usage
 
 1. Open file with idle or any other editor.
-2. Modifiy lines `23-46` for your personal preference: eg.
+2. Modifiy lines `23-48` for your personal preference: eg.
 ```
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
@@ -59,6 +59,8 @@ intScrTime = 120
 
 blnLogClick = "True"
 blnAddToStartup = "False"
+
+blnLogClipboard = "False"
 ```
 > NOTE: For `strScrDir`, be sure to leave out the last `/`.
 
