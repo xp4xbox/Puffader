@@ -22,7 +22,7 @@ Currently Puffader has several features such as:
 * Ability to store logs locally
 * Ability to configure log size before sending
 * Ability to send logs at timed intervals
-* Ability to stop the program via ctrl-rshift-h.
+* Ability to stop the program via ctrl-rshift-lshift-h.
 * Ability to log special characters.
 * Ability to embed an undetectable meterpreter shell
 * Ability to capture window mouse clicks
