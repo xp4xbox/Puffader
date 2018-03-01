@@ -17,7 +17,6 @@ The program can be downloaded via github or git eg.
 ## Features
 Currently Puffader has several features such as:
 * Ability to send logs to any gmail account.
-* Ability to send logs via ftp
 * Ability to capture screenshots
 * Ability to store logs locally
 * Ability to configure log size before sending
@@ -35,17 +34,10 @@ Currently Puffader has several features such as:
 ## Quick Usage
 
 1. Open file with idle or any other editor.
-2. Modifiy lines `23-49` for your personal preference: eg.
+2. Modifiy lines `18-37` for your personal preference: eg.
 ```
 strEmailAc = "email@gmail.com"
 strEmailPass = "pass"
-
-blnFTP = "False"
-strFtpServer = ""
-intFtpPort = 21
-strFtpUser = ""
-strFtpPass = ""
-strFtpRemotePath = "/"
 
 intCharPerSend = 1000
 
