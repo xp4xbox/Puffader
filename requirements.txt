@@ -1,0 +1,4 @@
+pyhook
+pywin32
+pyautogui
+py2exe
