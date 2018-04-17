@@ -1,4 +1,4 @@
 pyhook
 pywin32
-pyautogui
+pyscreeze
 py2exe
