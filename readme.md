@@ -70,6 +70,8 @@ For more information please refer to the [wiki](https://github.com/xp4xbox/Puffa
 
 ### Compiling Program To .exe
 
+> NOTE: Never scan compiled .exe's with Virus Total, NoDistribute or any other online public scan sites.
+
 #### Py2Exe
 1. **(Optional)** Add this code to Puffader.py `sys.stderr = None` after the import statements to ensure no errors will show.
 3. Make sure the program is called Puffader.py in your python folder as well.
