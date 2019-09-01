@@ -11,7 +11,7 @@ Puffader Requires:
 * [Py2Exe](https://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/)
 
 1. Download the repository using github or git eg.```git clone https://github.com/xp4xbox/Puffader```
-2. Install the modules by running `python -m pip install requirements.txt`
+2. Install the modules by running `python -m pip install -r requirements.txt`
 
 Please refer to the [wiki](https://github.com/xp4xbox/Puffader/wiki/Installing-Prerequisites) for more information on installing prerequisites.
 
