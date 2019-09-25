@@ -3,7 +3,7 @@
 Puffader is an opensource, hidden and undetectable keylogger for windows written in Python 2.7 which can also capture screenshots, mouse window clicks and clipboard data.
 
 ## Installation
-Puffader Requires:
+Puffader Requires 32 bit versions of:
 * [Python 2.7](https://www.python.org/downloads)
 * [Pyhook](https://sourceforge.net/projects/pyhook/files/pyhook/1.5.1/)
 * [Pywin32](https://sourceforge.net/projects/pywin32/files/pywin32/)
