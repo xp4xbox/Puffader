@@ -1,7 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/5tc6085mmmw6rym8?svg=true)](https://ci.appveyor.com/project/xp4xbox/puffader)
 # Puffader
 
-**Python 2.7 is obsolete so this project isn't really supported anymore please use https://github.com/xp4xbox/Python-Backdoor**
+**Python 2.7 is obsolete so this project isn't really supported anymore please use https://github.com/xp4xbox/Python-Keylogger**
 
 Puffader is an opensource, hidden and undetectable keylogger for windows written in Python 2.7 which can also capture screenshots, mouse window clicks and clipboard data.
 
